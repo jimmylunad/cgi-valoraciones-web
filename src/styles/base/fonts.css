@@ -1,0 +1,54 @@
+@font-face {
+  font-family: 'Flexo-black';
+  src: url('../../fonts/flexo-black-webfont.eot');
+  src: url('../../fonts/flexo-black-webfont.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/flexo-black-webfont.woff') format('woff'),
+       url('../../fonts/flexo-black-webfont.ttf') format('truetype'),
+       url('../../fonts/flexo-black-webfont.svg#Name') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+ 
+@font-face {
+  font-family: 'Flexo-bold';
+  src: url('../../fonts/flexo-bold-webfont.eot');
+  src: url('../../fonts/flexo-bold-webfont.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/flexo-bold-webfont.woff') format('woff'),
+       url('../../fonts/flexo-bold-webfont.ttf') format('truetype'),
+       url('../../fonts/flexo-bold-webfont.svg#Name') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Flexo-medium';
+  src: url('../../fonts/flexo-medium-webfont.eot');
+  src: url('../../fonts/flexo-medium-webfont.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/flexo-medium-webfont.woff') format('woff'),
+       url('../../fonts/flexo-medium-webfont.ttf') format('truetype'),
+       url('../../fonts/flexo-medium-webfont.svg#Name') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Flexo-regular';
+  src: url('../../fonts/flexo-regular-webfont.eot');
+  src: url('../../fonts/flexo-regular-webfont.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/flexo-regular-webfont.woff') format('woff'),
+       url('../../fonts/flexo-regular-webfont.ttf') format('truetype'),
+       url('../../fonts/flexo-regular-webfont.svg#Name') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Flexo-thin';
+  src: url('../../fonts/flexo-thin-webfont.eot');
+  src: url('../../fonts/flexo-thin-webfont.eot#iefix') format('embedded-opentype'),
+       url('../../fonts/flexo-thin-webfont.woff') format('woff'),
+       url('../../fonts/flexo-thin-webfont.ttf') format('truetype'),
+       url('../../fonts/flexo-thin-webfont.svg#Name') format('svg');
+  font-weight: normal;
+  font-style: normal;
+} 

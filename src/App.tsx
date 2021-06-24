@@ -1,25 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { 
+  Switch,
+  BrowserRouter as Router,
+} from "react-router-dom";
+import routes from 'modules';
+import { ThemeProvider as ThemeProviderMui } from '@material-ui/core/styles';
+import { ThemeProvider } from 'styled-components';
+import RouterOutlet from 'shared/RouteOutlet';
+import { themeGlobal, themeMui } from 'styles/theme';
+import 'styles/base/normalize.css';
+import 'styles/base/reset.css';
+import 'styles/base/fonts.css';
+import 'styles/base/_utils.scss';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={themeGlobal}>
+      <ThemeProviderMui theme={{...themeMui}}>
+          <Router>
+            <Switch>
+              {
+                routes.map((route) => (
+                  <RouterOutlet key={route.path} {...route} />
+                ))
+              }
+            </Switch>
+          </Router>
+      </ThemeProviderMui>
+    </ThemeProvider>
   );
 }
 

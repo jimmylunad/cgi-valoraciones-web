@@ -1,0 +1,29 @@
+@import 'styles/theme/global-theme';
+
+.form-input {
+  background-color: $color-primary;
+  height: 48px;
+  border-radius: 8px;
+  outline: none;
+  padding: 0 16px;
+  width: 100%;
+  border: 1px solid  $color-gray;
+  background: #f2f7f8;
+  margin-bottom: 16px;
+  font-size: 14px;
+  &:focus, &:focus-visible {
+    background: #e8f1fe;
+    border: 1px solid $color-primary;
+  }
+  &.--error {
+    border: 1px solid $color-error;
+  }
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  &__input {
+    margin-right: 8px;
+  }
+}

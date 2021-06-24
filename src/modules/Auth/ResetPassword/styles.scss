@@ -1,0 +1,35 @@
+@import 'styles/theme/global-theme';
+
+.container {
+  display: flex !important;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom: 24px;
+  border-radius: 100px;
+}
+
+.title {
+  font-family: $font-regular;
+  font-size: 16px;
+  color: $color-text;
+  margin-bottom: 8px;
+}
+
+.link, .text {
+  color: $color-secondary;
+  font-size: 14px;
+}
+
+.text {
+  margin-bottom: 40px;
+}
+
+.form-checkbox {
+  font-size: 14px;
+}
