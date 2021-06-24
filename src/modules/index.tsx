@@ -4,7 +4,7 @@ import AuthModule from "./Auth";
 
 const routes: RoutePage[] = [
   { path: '/auth', component: AuthModule },
-  // { path: '/', component: AdminModule },
+  { path: '/', component: AdminModule },
 ];
 
 export default routes;
