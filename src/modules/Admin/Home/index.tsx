@@ -1,5 +1,6 @@
 import { faBookmark, faHistory, faBell, faSignOutAlt, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { Container, Grid } from '@material-ui/core';
+import './styles.scss';
 
 type OptionsMenu = {
   title:  string,
@@ -22,8 +23,8 @@ const Home = ():JSX.Element => {
   return (
   <>
     <nav className="nav-header">
-      <Container maxWidth="md">
-        <Grid container>
+      <Container maxWidth="md" className="nav-header__container">
+        <Grid container justify="center">
           <Grid xs={6} item>
             <p>Logo</p>
           </Grid>
