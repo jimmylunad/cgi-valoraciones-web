@@ -16,11 +16,6 @@ type UseFecthFuction = {
 
 const initialProps: UseFetchProps = {
   loading: false,
-  config: {
-    headers: {
-      'content-type': 'application/json',
-    },
-  },
 };
 
 const useFetch = (
@@ -30,9 +25,9 @@ const useFetch = (
   }: UseFetchProps | any = initialProps,
 ): UseFecthFuction => {
   const [loading, setLoading] = useState(isLoading);
-  const [_config, setConfig] = useState<any>(config);
   const { CancelToken } = axios;
   const { token, cancel } = CancelToken.source();
+  const [initialConfig] = useState(config);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => () => cancel('component unmount'), []);
@@ -40,12 +35,11 @@ const useFetch = (
   const fetch = async (config: AxiosRequestConfig) : Promise<IResponse<any>> => {
     setLoading(true);
     try {
-      setConfig(config);
       const response = await axios({
         cancelToken: token,
-        ..._config,
+        ...initialConfig,
         ...config,
-        url: process.env.REACT_APP_API + _config.url, 
+        url: process.env.REACT_APP_API + initialConfig.url, 
       });
       setTimeout(() => {
         setLoading(false);

@@ -25,8 +25,15 @@
   font-size: 14px;
 }
 
+
 .text {
   margin-bottom: 40px;
+  &.--error {
+    color: $color-error;
+  }
+  &.--success {
+    color: $color-success;
+  }
 }
 
 .form-checkbox {
