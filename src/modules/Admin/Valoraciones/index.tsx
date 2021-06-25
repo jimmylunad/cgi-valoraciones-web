@@ -1,15 +1,23 @@
-import { faClipboardList, faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container } from '@material-ui/core';
+import { TabOption } from 'shared/Tabs';
 import Header from 'shared/Header';
+import Tabs from 'shared/Tabs';
 import './styles.scss';
 
 const Valoraciones = (): JSX.Element => {
+
+  const OPTIONS_TABS: TabOption[] = [
+    {title: 'INICIO', link: '/valoraciones'},
+    {title: 'HISTORIAL', link: '/historial'},
+  ];
 
   return (
   <>
     <Header link="/" title="Lista de valoraciones" />
     <div className="tab__wrapper">
+      <Tabs options={OPTIONS_TABS} />
       <Container maxWidth="md" className="tab__container">
         <div className="tab__title">
           <h5>Últimas asignaciones</h5>

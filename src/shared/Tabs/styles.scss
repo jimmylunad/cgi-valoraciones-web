@@ -1,0 +1,19 @@
+@import 'styles/theme/global-theme';
+
+.tabs {
+  width: 100%;
+  background-color: white;
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 3px solid white;
+    height: 40px;
+    color: $color-text;
+    cursor: pointer;
+    &.--active, &:hover {
+      color: $color-blue;
+      border-bottom-color: $color-blue;
+    }
+  }
+}
