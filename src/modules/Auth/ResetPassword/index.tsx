@@ -7,6 +7,7 @@ import "./styles.scss";
 import useFetch from "services/useFetch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import logo from "./../../../images/logo.png";
 
 const ResetPassword = ():JSX.Element => {
   const { 
@@ -42,7 +43,7 @@ const ResetPassword = ():JSX.Element => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Container maxWidth="md" className="container">
         <Grid container direction="column" alignItems="center">
-          <img className="logo" src="https://via.placeholder.com/150" alt="logo"></img>
+          <img className="logo" src={logo} alt="logo"></img>
           <h6 className="title">¿Olvidaste tu contraseña?</h6>
           <span className="text">Ingresa tu correo electrónico registrado</span>
           {errors.server && 

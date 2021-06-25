@@ -1,0 +1,114 @@
+@import 'styles/theme/global-theme';
+
+.nav-header-tab {
+  top:0;
+  background: #205390;
+  position: fixed;
+  width: 100vw;
+  z-index: 10;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  &__container {
+    height: 56px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $color-gray;
+    .logo {
+      font-size: 0;
+      margin: 0;
+      width: 64px;
+      img {
+        width: 100%;
+      }
+    }
+    .user {
+      font-size: 1.2em;
+    }
+  };
+}
+
+.navbar {
+  display: flex;
+  align-items:center;
+  padding: 0 8px;
+  &__back {
+    height: 36px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    font-size: 1.3em;
+  }
+  &__title {
+    h1 {
+      color: #FFFFFF;
+      font-size: 1em;
+      padding-top: 2px;
+    }
+  }
+}
+
+.tab {
+  &__wrapper {
+    height: 100vh;
+    z-index: 1;
+    padding: 56px 0 0;
+    background-color: #f8f8f9;
+    .tab {
+      &__container {
+        padding: 0 15px;
+      }
+    }
+  }
+  &__title {
+    margin: 15px 0;
+  }
+  &__list {
+    ul {
+      list-style: none;
+      .card {
+        padding: 8px 15px;
+        margin-top: 15px;
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}
+
+.assignment {
+  display: flex;
+  align-items: center;
+  &__ico {
+    font-size: 1.25em;
+    padding: 10px 20px 10px 5px;
+  }
+  &__detail {
+    width: calc(100% - 40px);
+    .detail {
+      &__superior {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 4px;
+        h2 {
+          font-size: 1.2em;
+          color: $color-text;
+        }
+        h6 {
+          color: lighten($color-text, 40%);
+        }
+      }
+      &__inferior {
+        p {
+          font-size: .8em;
+          color: $color-text;
+        }
+      }
+    }
+  }
+}

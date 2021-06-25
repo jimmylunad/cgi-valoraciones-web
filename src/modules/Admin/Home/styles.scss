@@ -1,38 +1,71 @@
+@import 'styles/theme/global-theme';
+
 .nav-header {
   top:0;
   background: white;
   position: fixed;
-  height: 48px;
   width: 100vw;
   &__container {
-    height: 48px;
+    height: 56px;
     display: flex !important;
     align-items: center;
     justify-content: center;
-    box-shadow: 0px 0px 2px 1px black;
+    border: 1px solid $color-gray;
+    .logo {
+      font-size: 0;
+      margin: 0;
+      width: 64px;
+      img {
+        width: 100%;
+      }
+    }
+    .user {
+      font-size: 1.2em;
+    }
   };
   z-index: 10;
 }
 
 .wrapper {
   height: 100vh;
-  background-color: #dedede;
+  background-color: #f8f8f9;
   z-index: 1;
-  padding: 60px 16px; 
+  padding: 72px 16px 16px; 
 }
 
 .card {
   background-color: white;
-  border-radius: 8px;
-  padding: 16px 24px;
+  border-radius: 12px;
+  padding: 24px 20px 36px;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .05);
+  &__title {
+    margin-bottom: 24px;
+    h1 {
+      font-family: $font-regular;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    p {
+      font-family: $font-regular;
+      font-size: .8em;
+      color: $color-secondary;
+    }
+  }
 }
 
 .menu {
   list-style: none;
   &__option {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     &:last-child {
       margin-bottom: 0;
+    }
+    p {
+      margin-bottom: 6px;
+    }
+    h6 {
+      font-size: .8em;
+      color: lighten($color-text, 30%);
     }
   }
 
@@ -42,7 +75,7 @@
     justify-content: center;
     height: 50px;
     width: 50px;
-    margin-right: 8px !important;
-    border-radius: 8px;
+    margin-right: 18px !important;
+    border-radius: 12px;
   }
 }
