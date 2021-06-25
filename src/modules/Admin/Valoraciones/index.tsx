@@ -1,7 +1,6 @@
 import { faClipboardList, faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
-import { useHistory } from 'react-router';
 import './styles.scss';
 
 const Valoraciones = (): JSX.Element => {

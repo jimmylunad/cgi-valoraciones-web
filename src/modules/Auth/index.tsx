@@ -13,7 +13,7 @@ const AuthModule: React.FC<{}> = () => {
     if (cookies['token']) {
       history.push('/');
     }
-  }, [])
+  }, [cookies, history])
   return (
     <div className="bg_login">
       <Switch>
