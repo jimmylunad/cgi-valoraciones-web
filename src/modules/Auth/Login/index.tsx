@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Container, Grid } from "@material-ui/core";
 import Button from "components/Button";
@@ -15,17 +15,15 @@ import logo from "./../../../images/logo.png";
 const Login = ():JSX.Element => {
   const [cookies, setCookie] = useCookies(["token", "pendingAssignment"]);
   const history = useHistory();
+  const [errorServer, setErrorServer] = useState<string | null>(null);
 
   const { 
     register, 
     handleSubmit, 
-    setError,
-    clearErrors,
     formState: { 
       errors 
     } 
-  } = useForm({
-  });
+  } = useForm();
 
   const { fetch, loading } = useFetch({
     config: {
@@ -35,24 +33,21 @@ const Login = ():JSX.Element => {
     loading: false,
   });
 
-  const onSubmit = async (data: any) => {
-    clearErrors("server");
+  const onSubmit = useCallback(async (data: any) => {
+    setErrorServer(null);
     const response = await fetch({ data });
 
     if (!response.success) {
-      setError("server",{
-        type: "string",
-        message: response.message,
-      })
+      setErrorServer(response.message);
     } else {
       let expires = new Date()
       expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
-
       setCookie("token", response.data.token, { path: '/', expires });
       setCookie("pendingAssignment", response.data.pendingAssignment, { path: '/', expires });
       history.push('/');
     }
-  };
+    return "";
+  }, [fetch, history, setCookie]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -61,8 +56,8 @@ const Login = ():JSX.Element => {
           <img className="logo" src={logo} alt="logo"></img>
           <h6 className="title">Iniciar sesión</h6>
           <span className="text">Ingresa tus credenciales</span>
-          {errors.server && 
-            <span className="text --error">{errors.server.message}</span>
+          {errorServer && 
+            <span className="text --error">{errorServer}</span>
           }
             <FormInput 
               type="text"

@@ -8,16 +8,17 @@ import useFetch from "services/useFetch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import logo from "./../../../images/logo.png";
+import { useState } from "react";
 
 const ResetPassword = ():JSX.Element => {
   const { 
     register, 
     handleSubmit, 
-    clearErrors,
-    setError,
     formState: { errors } 
   } = useForm();
-
+  const [errorServer, setErrorServer] = useState<string | null>(null);
+  const [msgServer, setMsgServer] = useState<string | null>(null);
+  
   const history = useHistory();
 
   const { fetch, loading } = useFetch({
@@ -29,13 +30,13 @@ const ResetPassword = ():JSX.Element => {
   });
 
   const onSubmit = async (data: any) => {
-    clearErrors("server");
+    setMsgServer(null);
+    setErrorServer(null);
     const response = await fetch({ data });
     if (!response.success) {
-      setError("server",{
-        type: "string",
-        message: response.message,
-      })
+      setErrorServer(response.message)
+    } else {
+      setMsgServer(response.message) 
     }
   };
 
@@ -46,9 +47,15 @@ const ResetPassword = ():JSX.Element => {
           <img className="logo" src={logo} alt="logo"></img>
           <h6 className="title">¿Olvidaste tu contraseña?</h6>
           <span className="text">Ingresa tu correo electrónico registrado</span>
-          {errors.server && 
-            <span className="text --error">{errors.server.message}</span>
+          
+          {errorServer && 
+            <span className="text --error">{errorServer}</span>
           }
+
+          {msgServer && 
+            <span className="text --success">{msgServer}</span>
+          }
+          
           <FormInput 
             type="text"
             className={"form-input " + (errors.email ? "--error" : '') } 
