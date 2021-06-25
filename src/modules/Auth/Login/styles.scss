@@ -1,12 +1,8 @@
 @import 'styles/theme/global-theme';
 
-.container {
-  display: flex !important;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
-}
+:host {
 
+<<<<<<< HEAD
 .logo {
   margin-left:auto;
   margin-right:auto;
@@ -29,9 +25,44 @@
   margin-bottom: 40px;
   &.--error {
     color: $color-error;
+=======
+  .container {
+    display: flex !important;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
   }
-}
-
-.form-checkbox {
-  font-size: 14px;
+  
+  .logo {
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom: 24px;
+  }
+  
+  .title {
+    font-family: $font-regular;
+    font-size: 16px;
+    color: $color-text;
+    margin-bottom: 8px;
+  }
+  
+  .link, .text {
+    color: $color-secondary;
+    font-size: 14px;
+  }
+  
+  .text {
+    margin-bottom: 40px;
+    &.--error {
+      color: $color-error;
+    }
+    &.--success {
+      color: $color-success;
+    }
+  }
+  
+  .form-checkbox {
+    font-size: 14px;
+>>>>>>> bb1d0c715fce72c7d53f7473d40fee53251c89c2
+  }
 }
