@@ -53,7 +53,7 @@ const Historial = (): JSX.Element => {
 
   return (
   <>
-    <Header link="/" title="Lista de valoraciones" />
+    <Header link="/" title="Historial" />
     <div className="tab__wrapper">
       <Tabs options={OPTIONS_TABS} />
       <Container maxWidth="md" className="tab__container">
