@@ -1,13 +1,45 @@
 .nav-header {
-  background-color: white;
+  top:0;
+  background: white;
   position: fixed;
-  height: 30px;
+  height: 48px;
   width: 100vw;
   &__container {
-    height: 47px;
-    display: flex;
+    height: 48px;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     box-shadow: 0px 0px 2px 1px black;
+  };
+  z-index: 10;
+}
+
+.wrapper {
+  height: 100vh;
+  background-color: #dedede;
+  z-index: 1;
+  padding: 60px 16px; 
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px 24px;
+}
+
+.menu {
+  list-style: none;
+  &__option {
+    margin-bottom: 16px;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    margin-right: 8px !important;
+    border-radius: 8px;
   }
 }

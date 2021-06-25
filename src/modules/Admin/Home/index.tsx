@@ -1,4 +1,5 @@
 import { faBookmark, faHistory, faBell, faSignOutAlt, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
 import './styles.scss';
 
@@ -34,6 +35,27 @@ const Home = ():JSX.Element => {
         </Grid>
       </Container>
     </nav>
+    <div className="wrapper">
+      <div className="card">
+        <ul className="menu">
+          {
+            MENU.map(option => (
+              <li className="menu__option">
+                <Grid container alignItems="center"> 
+                  <Grid item className="menu__icon" style={{background: option.bg}}> 
+                    <FontAwesomeIcon icon={option.icon} color={option.color}></FontAwesomeIcon>               
+                  </Grid>
+                  <Grid item xs={8}>
+                    <h6>{option.title}</h6>
+                    <p>{option.subtitle}</p>
+                  </Grid>
+                </Grid>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
   </>)
 };
 
