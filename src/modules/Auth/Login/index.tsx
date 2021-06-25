@@ -14,7 +14,7 @@ const Login = ():JSX.Element => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Container maxWidth="md" className="container">
         <Grid container direction="column" alignItems="center">
-          <img className="logo" src="https://via.placeholder.com/150" alt="logo"></img>
+          <img className="logo" src="/images/logo.png" alt="logo"/>
           <h6 className="title">Iniciar sesión</h6>
           <span className="text">Ingresa tus credenciales</span>
             <FormInput 
