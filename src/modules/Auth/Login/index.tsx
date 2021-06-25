@@ -38,8 +38,6 @@ const Login = ():JSX.Element => {
   const onSubmit = async (data: any) => {
     clearErrors("server");
     const response = await fetch({ data });
-    let expires = new Date()
-    expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
 
     if (!response.success) {
       setError("server",{
@@ -47,6 +45,9 @@ const Login = ():JSX.Element => {
         message: response.message,
       })
     } else {
+      let expires = new Date()
+      expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
+
       setCookie("token", response.data.token, { path: '/', expires });
       setCookie("pendingAssignment", response.data.pendingAssignment, { path: '/', expires });
       history.push('/');

@@ -45,31 +45,33 @@ const Home = ():JSX.Element => {
       </Container>
     </nav>
     <div className="wrapper">
-      <div className="card">
-        <div className="card__title">
-          <h1>Dashboard</h1>
-          <p>Tienes {cookies.pendingAssignment} valoraciones pendientes</p>
+      <Container maxWidth="md">
+        <div className="card">
+          <div className="card__title">
+            <h1>Dashboard</h1>
+            <p>Tienes {cookies.pendingAssignment} valoraciones pendientes</p>
+          </div>
+          <ul className="menu">
+            {
+              MENU.map(option => (
+                <li className="menu__option" onClick={() => {
+                  history.push(option.link);
+                }}>
+                  <Grid container alignItems="center"> 
+                    <Grid item className="menu__icon" style={{background: option.bg}}> 
+                      <FontAwesomeIcon icon={option.icon} color={option.color}></FontAwesomeIcon>               
+                    </Grid>
+                    <Grid item xs={8}>
+                      <p>{option.title}</p>
+                      <h6>{option.subtitle}</h6>
+                    </Grid>
+                  </Grid>
+                </li>
+              ))
+            }
+          </ul>
         </div>
-        <ul className="menu">
-          {
-            MENU.map(option => (
-              <li className="menu__option" onClick={() => {
-                history.push(option.link);
-              }}>
-                <Grid container alignItems="center"> 
-                  <Grid item className="menu__icon" style={{background: option.bg}}> 
-                    <FontAwesomeIcon icon={option.icon} color={option.color}></FontAwesomeIcon>               
-                  </Grid>
-                  <Grid item xs={8}>
-                    <p>{option.title}</p>
-                    <h6>{option.subtitle}</h6>
-                  </Grid>
-                </Grid>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+      </Container>
     </div>
   </>)
 };
