@@ -1,15 +1,19 @@
+import React from 'react';
 import { useForm } from "react-hook-form";
 import { Container, Grid } from "@material-ui/core";
 import Button from "components/Button";
 import { FormInput, FormCheckbox } from "components/Form";
-import { Link } from "react-router-dom";
-import "./styles.scss";
-import { useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import useFetch from "services/useFetch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { useCookies } from 'react-cookie';
+import "./styles.scss";
 
 const Login = ():JSX.Element => {
+  const [cookies, setCookie] = useCookies(["token"]);
+  const history = useHistory();
+
   const { 
     register, 
     handleSubmit, 
@@ -32,12 +36,18 @@ const Login = ():JSX.Element => {
   const onSubmit = async (data: any) => {
     clearErrors("server");
     const response = await fetch({ data });
-    if (!response.success) {
-      setError("server",{
-        type: "string",
-        message: response.message,
-      })
-    }
+    let expires = new Date()
+    expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
+    
+    setCookie("token", "a",{ path: '/', expires });
+    history.push('/');
+  
+    // if (!response.success) {
+    //   setError("server",{
+    //     type: "string",
+    //     message: response.message,
+    //   })
+    // }
   };
 
   return (

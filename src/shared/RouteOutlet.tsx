@@ -1,11 +1,14 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { RoutePage } from 'types/global';
+import { useCookies } from 'react-cookie';
 
 const RouterOutlet = (route: RoutePage) => {
 
-  const render = (props: any) => {
+  const [cookies] = useCookies(['token']);
 
+  const render = (props: any) => {
+    
     const component = (
       <route.component
         {...props}
@@ -13,10 +16,10 @@ const RouterOutlet = (route: RoutePage) => {
       />
     );
 
-    // if (route.protected && (props.staticContext !== undefined && !props.staticContext.login)) {
-    //   return <Redirect to={{ pathname: '/' }} />;
-    // }
-
+    if (route.protected && !cookies["token"]) {
+      return <Redirect to={{ pathname: '/auth/login' }} />;
+    } 
+    
     return component;
   };
 

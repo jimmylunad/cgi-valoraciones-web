@@ -1,6 +1,7 @@
 import { faBookmark, faHistory, faBell, faSignOutAlt, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
+import { useHistory } from 'react-router';
 import './styles.scss';
 
 type OptionsMenu = {
@@ -14,11 +15,12 @@ type OptionsMenu = {
 
 const Home = ():JSX.Element => {
 
+  const history = useHistory();
   const MENU: OptionsMenu[] = [
-    { title: 'Valoraciones', subtitle: 'Listado', link: '/listado', icon: faBookmark, bg: '#ffe2e5', color: '#f64e60' },
-    { title: 'Historial', subtitle: 'Valoraciones', link: '/valoraciones', icon: faHistory, bg: '#fff4de', color: '#ffa800' },
+    { title: 'Valoraciones', subtitle: 'Listado', link: '/valoraciones', icon: faBookmark, bg: '#ffe2e5', color: '#f64e60' },
+    { title: 'Historial', subtitle: 'Valoraciones', link: '/historial', icon: faHistory, bg: '#fff4de', color: '#ffa800' },
     { title: 'Notificaciones', subtitle: 'Notificaciones', link: '/notificaciones', icon: faBell, bg: '#c9f7f5', color: '#1bc5bd'},
-    { title: 'Cerrar sesión', link: '/listado', icon: faSignOutAlt, bg: '#8950fc', color: '#eee5ff' },
+    { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#8950fc', color: '#eee5ff' },
   ];
 
   return (
@@ -40,7 +42,9 @@ const Home = ():JSX.Element => {
         <ul className="menu">
           {
             MENU.map(option => (
-              <li className="menu__option">
+              <li className="menu__option" onClick={() => {
+                history.push(option.link);
+              }}>
                 <Grid container alignItems="center"> 
                   <Grid item className="menu__icon" style={{background: option.bg}}> 
                     <FontAwesomeIcon icon={option.icon} color={option.color}></FontAwesomeIcon>               
