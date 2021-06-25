@@ -54,10 +54,14 @@ const Login = ():JSX.Element => {
       <Container maxWidth="md" className="container">
         <Grid container direction="column" alignItems="center">
 <<<<<<< HEAD
+<<<<<<< HEAD
           <img className="logo" src="/images/logo.png" alt="logo"/>
 =======
           <img className="logo" src={logo} alt="logo"></img>
 >>>>>>> bb1d0c715fce72c7d53f7473d40fee53251c89c2
+=======
+          <img className="logo" src={logo} alt="logo"></img>
+>>>>>>> 4287ab7bda2440c66fd371e995f0229f23167e82
           <h6 className="title">Iniciar sesión</h6>
           <span className="text">Ingresa tus credenciales</span>
           {errorServer && 
