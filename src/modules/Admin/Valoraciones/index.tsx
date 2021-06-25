@@ -1,26 +1,14 @@
 import { faClipboardList, faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Container, Grid } from '@material-ui/core';
+import { Container } from '@material-ui/core';
+import Header from 'shared/Header';
 import './styles.scss';
 
 const Valoraciones = (): JSX.Element => {
 
   return (
   <>
-    <nav className="nav-header-tab">
-      <Grid container justify="center" alignItems="center">
-        <Grid xs={12} item>
-          <div className="navbar">
-            <div className="navbar__back">
-            <FontAwesomeIcon icon={faChevronCircleLeft} color="#FFFFFF"></FontAwesomeIcon>
-            </div>
-            <div className="navbar__title">
-              <h1>Lista de valoraciones</h1>
-            </div>
-          </div>
-        </Grid>
-      </Grid>
-    </nav>
+    <Header link="/" title="Lista de valoraciones" />
     <div className="tab__wrapper">
       <Container maxWidth="md" className="tab__container">
         <div className="tab__title">
