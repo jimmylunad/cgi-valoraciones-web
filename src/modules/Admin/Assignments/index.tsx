@@ -9,6 +9,7 @@ import './styles.scss';
 import useFetch from 'services/useFetch';
 import { useCallback, useEffect, useState } from 'react';
 import { Assignment } from 'types/assignment';
+import { useHistory } from 'react-router';
 
 
 const Loading = (): JSX.Element => (
@@ -27,6 +28,7 @@ const Loading = (): JSX.Element => (
 
 const Valoraciones = (): JSX.Element => {
 
+  const history = useHistory();
   const OPTIONS_TABS: TabOption[] = [
     {title: 'INICIO', link: '/valoraciones'},
     {title: 'HISTORIAL', link: '/historial'},
@@ -45,6 +47,7 @@ const Valoraciones = (): JSX.Element => {
     const response = await fetch({}); 
     if (response.success) {
       setAssignments(response.data);
+      localStorage.setItem('assignments', JSON.stringify(response.data));
     }
   }, []);
 
@@ -65,8 +68,8 @@ const Valoraciones = (): JSX.Element => {
           <ul>
             
             {
-             !loading ? assignments.map((assignment) => (
-                <li className="card">
+             !loading ? assignments.map((assignment, index) => (
+                <li className="card" onClick={() => { history.push('/informacion/' + index )}}>
                   <div className="assignment">
                     <div className="assignment__ico">
                       <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>

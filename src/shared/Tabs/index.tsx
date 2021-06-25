@@ -24,7 +24,10 @@ const Tabs = ({ options }: TabsProps) => {
           <Grid 
             item 
             xs={6} 
-            className={"tabs__item " + ( tabOption.link === routeMatch.path ? '--active' : '')}
+            className={
+              "tabs__item " + 
+              ( routeMatch.url.includes(tabOption.link)  ? '--active' : '')
+            }
             onClick={() => {history.push(tabOption.link)}}
             >
             <span>{tabOption.title}</span>

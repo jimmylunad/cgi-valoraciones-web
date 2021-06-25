@@ -58,7 +58,7 @@ const Historial = (): JSX.Element => {
       <Tabs options={OPTIONS_TABS} />
       <Container maxWidth="md" className="tab__container">
         <div className="tab__title">
-          <h5>Últimas asignaciones</h5>
+          <h5>Historial de asignaciones</h5>
         </div>
         <div className="tab__list">
           <ul>

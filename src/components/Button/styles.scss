@@ -15,6 +15,15 @@
   }
   &.--cancel {
     background-color: #ffe2e5;
-    color: #f64e60;
+    color: $color-error;
+  }
+  &.--outline-error {
+    background-color: white;
+    border-color: $color-error;    
+  }
+  &.--outline-info {
+    background-color: white;
+    border-color: $color-blue;    
+    color: $color-blue;
   }
 }
