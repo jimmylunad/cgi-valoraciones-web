@@ -75,7 +75,7 @@ const Historial = (): JSX.Element => {
                       <h6>{assignment.scheduledDate}</h6>
                     </div>
                     <div className="detail__inferior">
-                      <p>LQ - Aglomeración - Punto de acopio</p>
+                      <p>{assignment.name}</p>
                     </div>
                   </div>
                 </div>
