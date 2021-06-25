@@ -1,10 +1,29 @@
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Container } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { TabOption } from 'shared/Tabs';
 import Header from 'shared/Header';
 import Tabs from 'shared/Tabs';
 import './styles.scss';
+import useFetch from 'services/useFetch';
+import { useCallback, useEffect, useState } from 'react';
+import { Assignment } from 'types/assignment';
+
+
+const Loading = (): JSX.Element => (
+  <li className="card">
+    <Grid container>
+      <Grid item xs={2}>
+        <Skeleton height={50} width={30}></Skeleton>
+      </Grid>
+      <Grid item>
+        <Skeleton height={25} width={250}></Skeleton>
+        <Skeleton height={25} width={230}></Skeleton>
+      </Grid>
+    </Grid>
+  </li>
+)
 
 const Valoraciones = (): JSX.Element => {
 
@@ -12,6 +31,26 @@ const Valoraciones = (): JSX.Element => {
     {title: 'INICIO', link: '/valoraciones'},
     {title: 'HISTORIAL', link: '/historial'},
   ];
+
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+
+  const { fetch, loading } = useFetch({
+    loading: true,
+    config: {
+      url: '/v1/app/assignment?type=1',
+    }
+  })
+
+  const getData = useCallback(async () => {
+    const response = await fetch({}); 
+    if (response.success) {
+      setAssignments(response.data);
+    }
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, [getData])
 
   return (
   <>
@@ -24,38 +63,31 @@ const Valoraciones = (): JSX.Element => {
         </div>
         <div className="tab__list">
           <ul>
-            <li className="card">
-              <div className="assignment">
-                <div className="assignment__ico">
-                  <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>
-                </div>
-                <div className="assignment__detail">
-                  <div className="detail__superior">
-                    <h2>IGC-R-402</h2>
-                    <h6>Hace 15 min.</h6>
+            
+            {
+             !loading ? assignments.map((assignment) => (
+                <li className="card">
+                  <div className="assignment">
+                    <div className="assignment__ico">
+                      <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>
+                    </div>
+                    <div className="assignment__detail">
+                      <div className="detail__superior">
+                        <h2>{assignment.code}</h2>
+                        <h6>{assignment.scheduledDate}</h6>
+                      </div>
+                      <div className="detail__inferior">
+                        <p>LQ - Aglomeración - Punto de acopio</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="detail__inferior">
-                    <p>LQ - Aglomeración - Punto de acopio</p>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li className="card">
-              <div className="assignment">
-                <div className="assignment__ico">
-                  <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>
-                </div>
-                <div className="assignment__detail">
-                  <div className="detail__superior">
-                    <h2>IGC-R-402</h2>
-                    <h6>Hace 15 min.</h6>
-                  </div>
-                  <div className="detail__inferior">
-                    <p>LQ - Aglomeración - Punto de acopio</p>
-                  </div>
-                </div>
-              </div>
-            </li>
+                </li>
+              ))
+              :
+              Array(3).fill(2).map(() => (
+                <Loading />
+              ))
+            }
           </ul>
         </div>
       </Container>

@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
 import { IResponse } from 'types/http';
 import handleResponse from 'utils/handle-response';
+import { useCookies } from 'react-cookie';
 
 type UseFetchProps = {
   loading: boolean;
@@ -24,6 +25,7 @@ const useFetch = (
     config,
   }: UseFetchProps | any = initialProps,
 ): UseFecthFuction => {
+  const [cookies] = useCookies(["token"]);
   const [loading, setLoading] = useState(isLoading);
   const { CancelToken } = axios;
   const { token, cancel } = CancelToken.source();
@@ -34,11 +36,18 @@ const useFetch = (
 
   const fetch = async (config: AxiosRequestConfig) : Promise<IResponse<any>> => {
     setLoading(true);
+    let headers: any = {}
+
+    if (cookies["token"]) {
+      headers.Authorization = 'Bearer ' + cookies["token"];
+    }
+
     try {
       const response = await axios({
         cancelToken: token,
         ...initialConfig,
         ...config,
+        ...{ headers },
         url: process.env.REACT_APP_API + initialConfig.url, 
       });
       setTimeout(() => {
