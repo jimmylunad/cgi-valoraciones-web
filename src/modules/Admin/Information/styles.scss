@@ -51,9 +51,18 @@
   background-color: white;
   .btn {
     margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .--outline-info {
     font-family: $font-bold;
+    span {
+      margin-right: 8px;
+    }
+  }
+  .svg-inline--fa {
+    font-size: 1.4em;
   }
 }
