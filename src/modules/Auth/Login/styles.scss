@@ -28,6 +28,9 @@
 
 .text {
   margin-bottom: 40px;
+  &.--error {
+    color: $color-error;
+  }
 }
 
 .form-checkbox {

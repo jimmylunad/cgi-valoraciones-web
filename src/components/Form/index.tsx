@@ -1,13 +1,12 @@
+import React from "react";
 import "./styles.scss";
 
 
-export const FormInput = (props: any) => <input {...props}/>;
+export const FormInput = React.forwardRef((props: any, ref) => <input ref={ref} {...props}/>);
 
 FormInput.defaultProps = {
   className: 'form-input'
 }
-
-
 
 type FormCheckboxProps = {
   children: string,

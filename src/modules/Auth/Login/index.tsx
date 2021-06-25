@@ -4,11 +4,41 @@ import Button from "components/Button";
 import { FormInput, FormCheckbox } from "components/Form";
 import { Link } from "react-router-dom";
 import "./styles.scss";
+import { useEffect } from "react";
+import useFetch from "services/useFetch";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const Login = ():JSX.Element => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { 
+    register, 
+    handleSubmit, 
+    setError,
+    clearErrors,
+    formState: { 
+      errors 
+    } 
+  } = useForm({
+  });
 
-  const onSubmit = (data: any) => console.log(data);
+  const { fetch, loading } = useFetch({
+    config: {
+      url: '/v1/app/signin',
+      method: 'POST',
+    },
+    loading: false,
+  });
+
+  const onSubmit = async (data: any) => {
+    clearErrors("server");
+    const response = await fetch({ data });
+    if (!response.success) {
+      setError("server",{
+        type: "string",
+        message: response.message,
+      })
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -17,6 +47,9 @@ const Login = ():JSX.Element => {
           <img className="logo" src="https://via.placeholder.com/150" alt="logo"></img>
           <h6 className="title">Iniciar sesión</h6>
           <span className="text">Ingresa tus credenciales</span>
+          {errors.server && 
+            <span className="text --error">{errors.server.message}</span>
+          }
             <FormInput 
               type="text"
               className={"form-input " + (errors.email ? "--error" : '') } 
@@ -41,7 +74,9 @@ const Login = ():JSX.Element => {
             </Grid>
             <br></br>
             <br></br>
-            <Button className="btn --primary" type="submit"> Ingresar</Button>
+            <Button className="btn --primary" type="submit">
+              { loading ? <FontAwesomeIcon icon={faSpinner} spin size="2x"/> : 'Ingresar'}
+            </Button>
         </Grid>
       </Container>
     </form>
