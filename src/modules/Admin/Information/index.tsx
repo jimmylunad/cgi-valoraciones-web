@@ -1,50 +1,62 @@
-import { faArrowCircleRight, faChevronCircleRight, faClipboardList, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { faChevronCircleRight, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
-import { TabOption } from 'shared/Tabs';
-import Skeleton from '@material-ui/lab/Skeleton';
 import Header from 'shared/Header';
-import Tabs from 'shared/Tabs';
 import './styles.scss';
 import { Assignment } from 'types/assignment';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import useFetch from 'services/useFetch';
-import { useRouteMatch } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useHistory, useRouteMatch } from 'react-router';
 import Button from 'components/Button';
+import useFetch from 'services/useFetch';
 
-const Loading = (): JSX.Element => (
-  <li className="card">
-    <Grid container>
-      <Grid item xs={2}>
-        <Skeleton height={50} width={30}></Skeleton>
-      </Grid>
-      <Grid item>
-        <Skeleton height={25} width={250}></Skeleton>
-        <Skeleton height={25} width={230}></Skeleton>
-      </Grid>
-    </Grid>
-  </li>
-)
+
+type QueryProps = {
+  id:string; // Consultar data
+  index: string; // Id almacenado en localstorage
+}
 
 const Information = (): JSX.Element => {
 
-  const { params } = useRouteMatch<{id: string}>();
-  const assignments = useMemo(() => {
-    const data: any = localStorage.getItem('assignments');
-    return JSON.parse(data);
-  },[]);
+  const history = useHistory();
+  const { params } = useRouteMatch<QueryProps>();
+  const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
+  const [assignment, setAssignment] = useState<Assignment | any>({});
+  
+  const { fetch, loading } = useFetch({
+    loading: false,
+    config: {
+      url: '/v1/app/assignment/detail/' + params.id,
+    }
+  })
 
-  const [assignment] = useState<Assignment>(assignments[params.id]);
-  const OPTIONS_TABS: TabOption[] = [
-    {title: 'INFORMACIÓN', link: '/informacion'},
-    {title: 'VALORACIÓN', link: '/valoraion'},
-  ];
+  const getData = async () => {
+    const response = await fetch({}); 
+    if (response.success) {
+      setAssignment(response.data);
+    }
+  };
+
+  const getDataStorage = () => {
+    const assignments: any = localStorage.getItem("assignments");
+    setAssignment(JSON.parse(assignments)[params.index])
+  }
+
+  useEffect(() => {
+    if (params.id) {
+      setIsLocalData(false);
+      getData();
+    } else {
+      setIsLocalData(true);
+      getDataStorage();
+    }
+  }, [params])
+  
 
   return (
   <>
-    <Header link="/valoraciones" title="Valoración IGC-R-402" />
+    <Header link="/valoraciones" loading={loading} title={"Valoración " + assignment.code } />
     <div className="tab__wrapper">
-      <Tabs options={OPTIONS_TABS} />
       <Container maxWidth="md" className="tab__container">
         <Grid container className="summary" alignItems="center">
           <Grid item className="summary__icon">
@@ -85,10 +97,16 @@ const Information = (): JSX.Element => {
           </Grid>
         </Grid>
         <div className="actions">
-          <Button className="btn w-20 --outline-error">
+          {/* <Button className="btn w-20 --outline-error">
             <FontAwesomeIcon icon={faTimesCircle} color="#FF4A44" />
-          </Button>
-          <Button className="btn w-75 --outline-info">
+          </Button> */}
+          <Button 
+            className="btn --outline-info"
+            onClick={() => {
+              isLocalData ? history.push('/valoraciones/valoracion/' + params.index):
+              history.push('/historial/valoracion/' + params.id) 
+            }}
+          >
             <span>VALORAR</span>{" "}
             <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
           </Button>

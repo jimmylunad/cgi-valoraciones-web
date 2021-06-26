@@ -1,0 +1,28 @@
+@import 'styles/theme/global-theme';
+
+.form {
+  margin-top: 16px;
+
+  .btn {
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .svg-inline--fa {
+    font-size: 1.4em;
+    margin-right: 8px;
+  }
+
+  .--outline-info {
+    margin-top: 8px;
+  }
+
+  &__file {
+    width: 100%;
+    input {
+      display: none;
+    }
+  }
+}

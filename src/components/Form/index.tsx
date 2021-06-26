@@ -1,4 +1,5 @@
 import React from "react";
+import Select from 'react-select';
 import "./styles.scss";
 
 
@@ -19,4 +20,13 @@ export const FormCheckbox = ({children, ...props }:FormCheckboxProps) => (
       {children}
     </span>
   </label>
-)
+);
+
+type FormLabelProps = {
+  children: string;
+}
+
+
+export const FormLabel = ({children}: FormLabelProps) => <label className="form-label">{children}</label>
+
+export const FormSelect = (props: any) => (<Select className="form-select" {...props} />); 

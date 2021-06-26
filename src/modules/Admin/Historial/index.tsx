@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
@@ -9,6 +10,7 @@ import './styles.scss';
 import { Assignment } from 'types/assignment';
 import { useCallback, useEffect, useState } from 'react';
 import useFetch from 'services/useFetch';
+import { useHistory } from 'react-router';
 
 const Loading = (): JSX.Element => (
   <li className="card">
@@ -26,6 +28,7 @@ const Loading = (): JSX.Element => (
 
 const Historial = (): JSX.Element => {
 
+  const history = useHistory();
   const OPTIONS_TABS: TabOption[] = [
     {title: 'INICIO', link: '/valoraciones'},
     {title: 'HISTORIAL', link: '/historial'},
@@ -64,7 +67,9 @@ const Historial = (): JSX.Element => {
           <ul>
             {
              !loading ? assignments.map((assignment) => (
-              <li className="card">
+              <li className="card" onClick={() => {
+                history.push('/historial/informacion/' + assignment.id)
+              }}>
                 <div className="assignment">
                   <div className="assignment__ico">
                     <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>

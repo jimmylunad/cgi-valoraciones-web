@@ -1,0 +1,28 @@
+@import 'styles/theme/global-theme';
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  width: 100vw;
+  padding: 16px 16px;
+  left: 0;
+  bottom: 0;
+  background-color: white;
+  .btn {
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .--outline-info {
+    font-family: $font-bold;
+    span {
+      margin-right: 8px;
+    }
+  }
+  .svg-inline--fa {
+    font-size: 1.4em;
+  }
+}

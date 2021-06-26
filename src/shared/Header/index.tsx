@@ -2,14 +2,16 @@ import { faChevronCircleLeft } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Grid } from "@material-ui/core"
 import { useHistory } from "react-router"
+import Skeleton from '@material-ui/lab/Skeleton'
 import './styles.scss';
 
 type HeaderProps = {
   link: string,
   title?: string;
+  loading?: boolean;
 }
 
-const Header = ({ link, title }: HeaderProps) => {
+const Header = ({ link, title, loading }: HeaderProps) => {
   const history = useHistory();
   
   return (
@@ -24,7 +26,7 @@ const Header = ({ link, title }: HeaderProps) => {
               />
             </div>
             <div className="navbar__title">
-              <h1>{title}</h1>
+              {loading ? <Skeleton width={300} height={30} /> : <h1>{title}</h1>}
             </div>
           </div>
         </Grid>

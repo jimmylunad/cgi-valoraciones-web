@@ -1,5 +1,4 @@
 import { Grid } from "@material-ui/core";
-import { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router";
 import './styles.scss';
 
@@ -24,6 +23,7 @@ const Tabs = ({ options }: TabsProps) => {
           <Grid 
             item 
             xs={6} 
+            key={tabOption.link}
             className={
               "tabs__item " + 
               ( routeMatch.url.includes(tabOption.link)  ? '--active' : '')

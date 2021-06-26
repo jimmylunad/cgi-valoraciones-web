@@ -1,30 +1,13 @@
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Container, Grid } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { Container } from '@material-ui/core';
 import { TabOption } from 'shared/Tabs';
 import Header from 'shared/Header';
 import Tabs from 'shared/Tabs';
 import './styles.scss';
-import useFetch from 'services/useFetch';
-import { useCallback, useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { Assignment } from 'types/assignment';
 import { useHistory } from 'react-router';
-
-
-const Loading = (): JSX.Element => (
-  <li className="card">
-    <Grid container>
-      <Grid item xs={2}>
-        <Skeleton height={50} width={30}></Skeleton>
-      </Grid>
-      <Grid item>
-        <Skeleton height={25} width={250}></Skeleton>
-        <Skeleton height={25} width={230}></Skeleton>
-      </Grid>
-    </Grid>
-  </li>
-)
 
 const Valoraciones = (): JSX.Element => {
 
@@ -34,26 +17,10 @@ const Valoraciones = (): JSX.Element => {
     {title: 'HISTORIAL', link: '/historial'},
   ];
 
-  const [assignments, setAssignments] = useState<Assignment[]>([]);
-
-  const { fetch, loading } = useFetch({
-    loading: true,
-    config: {
-      url: '/v1/app/assignment?type=1',
-    }
-  })
-
-  const getData = useCallback(async () => {
-    const response = await fetch({}); 
-    if (response.success) {
-      setAssignments(response.data);
-      localStorage.setItem('assignments', JSON.stringify(response.data));
-    }
+  const assignments = useMemo((): Assignment[] => {
+    const assignments: any = localStorage.getItem("assignments");
+    return JSON.parse(assignments);
   }, []);
-
-  useEffect(() => {
-    getData();
-  }, [getData])
 
   return (
   <>
@@ -65,11 +32,10 @@ const Valoraciones = (): JSX.Element => {
           <h5>Últimas asignaciones</h5>
         </div>
         <div className="tab__list">
-          <ul>
-            
+          <ul> 
             {
-             !loading ? assignments.map((assignment, index) => (
-                <li className="card" onClick={() => { history.push('/informacion/' + index )}}>
+             assignments.map((assignment, index) => (
+                <li className="card" onClick={() => { history.push('/valoraciones/informacion/' + index )}}>
                   <div className="assignment">
                     <div className="assignment__ico">
                       <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>
@@ -85,10 +51,6 @@ const Valoraciones = (): JSX.Element => {
                     </div>
                   </div>
                 </li>
-              ))
-              :
-              Array(3).fill(2).map(() => (
-                <Loading />
               ))
             }
           </ul>
