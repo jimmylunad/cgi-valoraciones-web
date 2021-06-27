@@ -5,18 +5,20 @@ import Button from "components/Button";
 type FooterProps = {
   title: string;
   icon: IconDefinition,
-  onClick: () => void,
+  onClick?: (event:any) => void,
   type?: string,
-  loading:boolean
+  loading?:boolean,
+  disabled?:boolean
 }
 
-const Footer = ({ title, icon, type, loading, onClick }: FooterProps) => {
+const Footer = ({ title, icon, type, loading, onClick, ...props}: FooterProps) => {
   return (
     <div className="actions">
       <Button
         className="btn --outline-info"
         type={type}
         onClick={onClick}
+        {...props}
       >
          { 
           loading ? 

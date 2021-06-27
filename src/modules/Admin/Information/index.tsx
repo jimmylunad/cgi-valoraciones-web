@@ -58,7 +58,7 @@ const Information = (): JSX.Element => {
     <Header 
       link={ isLocalData ?  "/programaciones" : "/historial"} 
       loading={loading} 
-      title={"Valoración " + assignment.code } 
+      title={"Programación " + assignment.code } 
     />
     <div className="tab__wrapper">
       <Container maxWidth="md" className="tab__container">
@@ -68,7 +68,7 @@ const Information = (): JSX.Element => {
           </Grid>
           <Grid item>
             <h3 className="summary__title">{assignment.code}</h3>
-            <span className="summary__subtitle">{assignment.name}</span>
+            <span className="summary__subtitle">{assignment.addresName}</span>
           </Grid>
         </Grid>
         <Grid container className="detail">

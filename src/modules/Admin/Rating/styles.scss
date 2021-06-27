@@ -26,6 +26,7 @@
 
   &__file {
     width: 100%;
+    font-family: $font-bold;
     input {
       display: none;
     }
@@ -61,4 +62,13 @@
     background-repeat: no-repeat;
     margin-bottom: 16px;
   }
+}
+
+.MuiAlert-root {
+  position: absolute;
+  bottom: 95px;
+  z-index: 10;
+  left: 5%;
+  width: 90%;
+  
 }

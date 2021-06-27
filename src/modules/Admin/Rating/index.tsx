@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faCamera,  faCheckCircle, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faChevronCircleRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
 import Header from 'shared/Header';
@@ -13,6 +13,7 @@ import { useForm, Controller } from 'react-hook-form';
 import useFetch from 'services/useFetch';
 import { Alert } from '@material-ui/lab';
 import Button from 'components/Button';
+import Summary from './Summary';
 
 type QueryProps = {
   id:string; // Consultar data
@@ -23,11 +24,14 @@ const Rating = (): JSX.Element => {
 
   const { params } = useRouteMatch<QueryProps>();
   const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
-  const [previewImage, setPreviewImage] = useState<any>(null);
   const [images, setImages] = useState<{preview: string, file: any}[]>([]);
   const [subOptions, setSuboptions] = useState<any>(null);
-  const [requestStatus, setRequestStatus] = useState<null | boolean | string>(null);
+  const [responseServer, setResponseServer] = useState<{
+    severity: "success" | "error",
+    message: string,
+  } | null>(null);
   const [assignment, setAssignment] = useState<Assignment | any>({});
+  const [previewSummary, setPreviewSummary] = useState<boolean>(false);
   
   const { fetch:submitPost, loading:loadingPost } = useFetch({
     config: {
@@ -65,7 +69,8 @@ const Rating = (): JSX.Element => {
     control,
     reset,
     formState: { 
-      errors 
+      errors,
+      isValid,
     } 
   } = useForm<any>({
     defaultValues: {
@@ -111,14 +116,16 @@ const Rating = (): JSX.Element => {
     if (!loadingPost) {
       const bodyFormData = new FormData();
       bodyFormData.set('id', data.id);
-      bodyFormData.set('id_option_1', data.id_option_1);
-      bodyFormData.set('id_option_1', data.id_option_1);
-      bodyFormData.set('id_option_2', data.id_option_2);
-      bodyFormData.set('id_option_3', data.id_option_3);
+      bodyFormData.set('id_option_1', data.id_option_1.value);
+      bodyFormData.set('id_option_2', data.id_option_2?.value || null);
+      bodyFormData.set('id_option_3', data.id_option_3?.value || null);
       bodyFormData.set('observation', data.observation);
       bodyFormData.set('latitud', data.latitud);
       bodyFormData.set('longitud', data.longitud);
-      bodyFormData.set('file', data.file);
+
+      images.forEach((image, index: number) => {
+        bodyFormData.set('file_' + index , image.file);
+      })
       
       const response = await submitPost({
         config: {
@@ -127,10 +134,12 @@ const Rating = (): JSX.Element => {
         data: bodyFormData
       })
 
-      setRequestStatus(response.success ? true : response.message);
+      setResponseServer({
+        severity: response.success ? 'success' : 'error',
+        message: response.message
+      });
       setTimeout(() => {
         reset();
-        setRequestStatus(null);
       }, 4000);   
     }
   }, [submitPost]);
@@ -177,108 +186,130 @@ const Rating = (): JSX.Element => {
         isLocalData ? '/programaciones/informacion/' + params.index:
         '/historial/informacion/' + params.id
       } 
-      title={"Valoración " + assignment.code} 
+      title={"Programación " + assignment.code} 
     />
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="tab__wrapper">
         <Container maxWidth="md" className="tab__container">
-          <Grid container className="form" alignItems="center" justify="center">
-            <Grid item xs={12}>
-              <FormLabel>Seleccione 1</FormLabel>
-              <Controller
-                name="id_option_1"
-                control={control}
-                rules={{ required: 'Please select an option'}}
-                render={({ field }) => 
-                <FormSelect 
-                  {...field} 
-                  placeholder="Seleccionar"
-                  className={"form-select " + (errors.id_option_1 ? '--error' : '')} 
-                  options={combo.options.map((e:any) => ({value: e.id, label: e.option, add_input: e.add_input }))} 
-                />}
-              />
-            </Grid>
-            {
-              subOptions && subOptions.combos.map((option: any, index : number) => (
-                <Grid item xs={12} key={'option-' + option.id}>
-                  <FormLabel>{"Seleccione " + (index + 2)}</FormLabel>
+          {
+            !previewSummary ? 
+            <>
+              <Grid container className="form" alignItems="center" justify="center">
+                <Grid item xs={12}>
+                  <FormLabel>Seleccione 1</FormLabel>
                   <Controller
-                    name={"id_option_" + String(index + 2)}
+                    name="id_option_1"
                     control={control}
                     rules={{ required: 'Please select an option'}}
                     render={({ field }) => 
                     <FormSelect 
                       {...field} 
                       placeholder="Seleccionar"
-                      className={"form-select " + (errors['id_option_' + (index  + 2)] ? '--error' : '')} 
-                      options={option.map((e:any) => ({value: e.id, label: e.option }))} 
+                      className={"form-select " + (errors.id_option_1 ? '--error' : '')} 
+                      options={combo.options.map((e:any) => ({value: e.id, label: e.option, add_input: e.add_input }))} 
                     />}
                   />
                 </Grid>
-              ))
-            }
-
-            {
-              getValues('id_option_1')?.add_input &&
-              <Grid item xs={12}>
-                <FormLabel> Observación</FormLabel>
-                <FormTextarea {...register('observation')} placeholder="Ingresar observación"></FormTextarea>
-              </Grid>
-            }
-
-            <Grid container>
-              <FormLabel>{"Evidencias"}</FormLabel>
-              <label className={"form__file w-90"}>
-                <input onChange={onChangeImages} accept="image/*" type="file" multiple></input>
-                <span className="btn --outline-info">
-                  <FontAwesomeIcon icon={faCamera}></FontAwesomeIcon>
-                  <span>TOMAR / CARGAR FOTO</span>
-                </span>
-                <br></br>
-                <br></br>
-              </label>
-            </Grid>
-
-            <Grid container className="form__preview">
-              {
-                images.map((image, index) => (
-                  <Grid item xs={4} key={index} >
-                    <div className="form__preview-wrapper" 
-                      style={{ background: `url('${image.preview}')`}}
-                    >
-                      <Button className={"btn --cancel"} onClick={() => {
-                        onDeleteImages(index)
-                      }}>
-                        <FontAwesomeIcon icon={faTimes} /> 
-                      </Button>
-                    </div>
+                {
+                  subOptions && subOptions.combos.map((option: any, index : number) => (
+                    <Grid item xs={12} key={'option-' + option.id}>
+                      <FormLabel>{"Seleccione " + (index + 2)}</FormLabel>
+                      <Controller
+                        name={"id_option_" + String(index + 2)}
+                        control={control}
+                        rules={{ required: 'Please select an option'}}
+                        render={({ field }) => 
+                        <FormSelect 
+                          {...field} 
+                          placeholder="Seleccionar"
+                          className={"form-select " + (errors['id_option_' + (index  + 2)] ? '--error' : '')} 
+                          options={option.map((e:any) => ({value: e.id, label: e.option }))} 
+                        />}
+                      />
+                    </Grid>
+                  ))
+                }
+                {
+                  getValues('id_option_1')?.add_input &&
+                  <Grid item xs={12}>
+                    <FormLabel> Observación</FormLabel>
+                    <FormTextarea {...register('observation')} placeholder="Ingresar observación"></FormTextarea>
                   </Grid>
-                ))
-              }
-            </Grid>
-          </Grid>
+                }
+                <Grid container>
+                  <FormLabel>{"Evidencias"}</FormLabel>
+                  <label className={"form__file w-100"}>
+                    <input onChange={onChangeImages} accept="image/*" type="file" multiple></input>
+                    <span className="btn --outline-info">
+                      <FontAwesomeIcon icon={faCamera}></FontAwesomeIcon>
+                      <span>TOMAR / CARGAR FOTO</span>
+                    </span>
+                    <br></br>
+                    <br></br>
+                  </label>
+                </Grid>
+
+                <Grid container className="form__preview">
+                  {
+                    images.map((image, index) => (
+                      <Grid item xs={4} key={index} >
+                        <div className="form__preview-wrapper" 
+                          style={{ background: `url('${image.preview}')`}}
+                        >
+                          <Button className={"btn --cancel"} onClick={() => {
+                            onDeleteImages(index)
+                          }}>
+                            <FontAwesomeIcon icon={faTimes} /> 
+                          </Button>
+                        </div>
+                      </Grid>
+                    ))
+                  }
+                </Grid>
+              </Grid>
+            </>
+            :
+            <Summary 
+              assignment={assignment}
+              success={() => {}} 
+              cancel={() => {}} 
+              form={getValues()}
+              images={images}
+            />
+          }
           
           {
-            typeof requestStatus === 'boolean' &&
+            responseServer &&
             <>
-            <br></br>
+              <br></br>
               {
-                requestStatus === true ? 
-                <Alert severity="success"> Información registrada correctamente</Alert>
-                : 
-                <Alert severity="error"> {requestStatus}</Alert>
-              }
+                <Alert  severity={responseServer.severity}>
+                    {responseServer.message}
+                </Alert>
+               }
             </>
           }
         </Container>
-        <Footer 
-          loading={loadingPost} 
-          type={"submit"} 
-          title={"Siguiente"} 
-          icon={faCheckCircle} 
-          onClick={() => {
-          }}
-        />
+        {
+          !previewSummary ?
+            <Footer 
+              type="button"
+              title={"SIGUIENTE"} 
+              icon={faChevronCircleRight} 
+              onClick={(event:any) => {
+                event.preventDefault();
+                if (isValid) {
+                  setPreviewSummary(true);
+                }
+              }}
+            /> :
+            <Footer 
+              type={"submit"} 
+              title={"VALORAR"} 
+              icon={faChevronCircleRight} 
+              loading={loadingPost}
+            />          
+        }
       </div>
     </form>
 

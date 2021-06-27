@@ -66,10 +66,10 @@ const Historial = (): JSX.Element => {
         <div className="tab__list">
           <ul>
             {
-             !loading ? assignments.map((assignment) => (
+             !loading ? assignments.map((assignment, index) => (
               <li 
                 className="card"
-                key={assignment.id} 
+                key={index *2} 
                 onClick={() => {
                 history.push('/historial/informacion/' + assignment.id)
               }}>
@@ -83,15 +83,15 @@ const Historial = (): JSX.Element => {
                       <h6>{assignment.scheduledDate}</h6>
                     </div>
                     <div className="detail__inferior">
-                      <p>{assignment.name}</p>
+                      <p>{assignment.addresName}</p>
                     </div>
                   </div>
                 </div>
               </li>
             ))
             :
-            Array(3).fill(2).map(() => (
-              <Loading />
+            Array(3).fill(2).map((e, index) => (
+              <Loading key={index*2}/>
             ))
             }
           </ul>
