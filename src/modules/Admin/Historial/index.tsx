@@ -30,7 +30,7 @@ const Historial = (): JSX.Element => {
 
   const history = useHistory();
   const OPTIONS_TABS: TabOption[] = [
-    {title: 'INICIO', link: '/valoraciones'},
+    {title: 'INICIO', link: '/programaciones'},
     {title: 'HISTORIAL', link: '/historial'},
   ];
 

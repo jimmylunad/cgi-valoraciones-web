@@ -13,7 +13,7 @@ const Valoraciones = (): JSX.Element => {
 
   const history = useHistory();
   const OPTIONS_TABS: TabOption[] = [
-    {title: 'INICIO', link: '/valoraciones'},
+    {title: 'INICIO', link: '/programaciones'},
     {title: 'HISTORIAL', link: '/historial'},
   ];
 
@@ -24,7 +24,7 @@ const Valoraciones = (): JSX.Element => {
 
   return (
   <>
-    <Header link="/" title="Lista de valoraciones" />
+    <Header link="/" title="Lista de programaciones" />
     <div className="tab__wrapper">
       <Tabs options={OPTIONS_TABS} />
       <Container maxWidth="md" className="tab__container">
@@ -35,7 +35,7 @@ const Valoraciones = (): JSX.Element => {
           <ul> 
             {
              assignments.map((assignment, index) => (
-                <li className="card" onClick={() => { history.push('/valoraciones/informacion/' + index )}}>
+                <li className="card" onClick={() => { history.push('/programaciones/informacion/' + index )}}>
                   <div className="assignment">
                     <div className="assignment__ico">
                       <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>
