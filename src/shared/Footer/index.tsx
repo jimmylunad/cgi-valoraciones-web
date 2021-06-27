@@ -1,4 +1,4 @@
-import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "components/Button";
 
@@ -18,8 +18,14 @@ const Footer = ({ title, icon, type, loading, onClick }: FooterProps) => {
         type={type}
         onClick={onClick}
       >
-        <span>{title}</span>{" "}
-        <FontAwesomeIcon icon={icon} color="#205390" />
+         { 
+          loading ? 
+            <FontAwesomeIcon icon={faSpinner} spin size="2x" color="#205390"/> : 
+            <>
+              <span>{title}</span>{" "}
+              <FontAwesomeIcon icon={icon} color="#205390" />
+            </>
+          }
       </Button>
     </div>
   )

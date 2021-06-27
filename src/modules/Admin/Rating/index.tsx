@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { faCamera,  faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
@@ -9,6 +10,8 @@ import { FormLabel, FormSelect, FormTextarea  } from 'components/Form';
 import Footer from 'shared/Footer';
 import './styles.scss';
 import { useForm, Controller } from 'react-hook-form';
+import useFetch from 'services/useFetch';
+import { Alert } from '@material-ui/lab';
 
 type QueryProps = {
   id:string; // Consultar data
@@ -19,9 +22,37 @@ const Rating = (): JSX.Element => {
 
   const { params } = useRouteMatch<QueryProps>();
   const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
-  const [assignment] = useState<Assignment | any>({});
   const [previewImage, setPreviewImage] = useState<any>(null);
   const [subOptions, setSuboptions] = useState<any>(null);
+  const [requestStatus, setRequestStatus] = useState<null | boolean | string>(null);
+  const [assignment, setAssignment] = useState<Assignment | any>({});
+  
+  const { fetch:submitPost, loading:loadingPost } = useFetch({
+    config: {
+      url: '/v1/app/assignment',
+      method: 'POST'
+    }
+  })
+
+  
+  const { fetch, loading } = useFetch({
+    loading: false,
+    config: {
+      url: '/v1/app/assignment/detail/' + params.id,
+    }
+  })
+
+  const getData = async () => {
+    const response = await fetch({}); 
+    if (response.success) {
+      setAssignment(response.data);
+    }
+  };
+
+  const getDataStorage = () => {
+    const assignments: any = localStorage.getItem("assignments");
+    setAssignment(JSON.parse(assignments)[params.index])
+  }
 
   const { 
     register, 
@@ -30,11 +61,13 @@ const Rating = (): JSX.Element => {
     setValue,
     getValues,
     control,
+    reset,
     formState: { 
       errors 
     } 
   } = useForm<any>({
     defaultValues: {
+      id: null,
       id_option_1: null,
       id_option_2: null, 
       id_option_3: null, 
@@ -56,14 +89,6 @@ const Rating = (): JSX.Element => {
     });
   },[]);
 
-  useEffect(() => {
-    if (params.id) {
-      setIsLocalData(false);
-    } else {
-      setIsLocalData(true);
-    }
-  }, [params])
-
   const onChange = (event:any) => {
     const file:any = event.target.files[0];
     // const [file] = imgInp.files
@@ -72,12 +97,35 @@ const Rating = (): JSX.Element => {
     }
   }
 
-  const onSubmit = useCallback(async (data: any) => {
-    console.log("daata", data)
-  }, []);
+  const onSubmit = useCallback(async (data:any) => {
+    if (!loadingPost) {
+      const bodyFormData = new FormData();
+      bodyFormData.set('id', data.id);
+      bodyFormData.set('id_option_1', data.id_option_1);
+      bodyFormData.set('id_option_1', data.id_option_1);
+      bodyFormData.set('id_option_2', data.id_option_2);
+      bodyFormData.set('id_option_3', data.id_option_3);
+      bodyFormData.set('observation', data.observation);
+      bodyFormData.set('latitud', data.latitud);
+      bodyFormData.set('longitud', data.longitud);
+      bodyFormData.set('file', data.file);
+      
+      const response = await submitPost({
+        config: {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+        data: bodyFormData
+      })
+
+      setRequestStatus(response.success ? true : response.message);
+      setTimeout(() => {
+        reset();
+        setRequestStatus(null);
+      }, 4000);   
+    }
+  }, [submitPost]);
 
   useEffect(() => {
-    console.log("id_option_1", getValues("id_option_1"));
     setValue("id_option_2", null);
     setValue("id_option_3", null);
     setValue("observation", null);
@@ -92,6 +140,18 @@ const Rating = (): JSX.Element => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch("id_option_1")]);
 
+  useEffect(() => {
+    if (params.id) {
+      setIsLocalData(false);
+      setValue('id', params.id);
+      getData();
+    } else {
+      setIsLocalData(true);
+      setValue('id', params.index);
+      getDataStorage();
+    }
+  }, [params, setValue])
+  
   return (
   <>
     <Header 
@@ -99,7 +159,7 @@ const Rating = (): JSX.Element => {
         isLocalData ? '/programaciones/informacion/' + params.index:
         '/historial/informacion/' + params.id
       } 
-      title={"Valoración " + (assignment.code || '')} 
+      title={"Valoración " + assignment.code} 
     />
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="tab__wrapper">
@@ -159,8 +219,21 @@ const Rating = (): JSX.Element => {
               </span>
             </label>
           </Grid>
+          
+          {
+            typeof requestStatus === 'boolean' &&
+            <>
+            <br></br>
+              {
+                requestStatus === true ? 
+                <Alert severity="success"> Información registrada correctamente</Alert>
+                : 
+                <Alert severity="error"> {requestStatus}</Alert>
+              }
+            </>
+          }
         </Container>
-        <Footer loading={false} type={"submit"} title={"Confirmar"} icon={faCheckCircle} onClick={() => {
+        <Footer loading={loadingPost} type={"submit"} title={"Confirmar"} icon={faCheckCircle} onClick={() => {
         }}></Footer>
       </div>
     </form>
