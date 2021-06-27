@@ -103,8 +103,8 @@ const Information = (): JSX.Element => {
           <Button 
             className="btn --outline-info"
             onClick={() => {
-              isLocalData ? history.push('/programaciones/valoracion/' + params.index):
-              history.push('/historial/valoracion/' + params.id) 
+              isLocalData ? history.push('/programaciones/programacion/' + params.index):
+              history.push('/historial/programacion/' + params.id) 
             }}
           >
             <span>VALORAR</span>{" "}
