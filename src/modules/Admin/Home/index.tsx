@@ -35,10 +35,22 @@ const Home = ():JSX.Element => {
     }
   })
 
+  const { fetch:fetchCombo } = useFetch({
+    loading: true,
+    config: {
+      url: '/v1/app/assignment/combo',
+    }
+  })
+
   const getData = useCallback(async () => {
     const response = await fetch({}); 
     if (response.success) {
       localStorage.setItem('assignments', JSON.stringify(response.data));
+    }
+
+    const responseCombo = await fetchCombo({});
+    if (responseCombo.success) {
+      localStorage.setItem('combo', JSON.stringify(responseCombo.data));
     }
   }, []);
 

@@ -29,4 +29,6 @@ type FormLabelProps = {
 
 export const FormLabel = ({children}: FormLabelProps) => <label className="form-label">{children}</label>
 
-export const FormSelect = (props: any) => (<Select className="form-select" {...props} />); 
+export const FormSelect =  React.forwardRef((props: any, ref) => (<Select isSearchable={false} ref={ref} {...props} />)); 
+
+export const FormTextarea = React.forwardRef((props: any, ref) =>  <textarea className="form-textarea" ref={ref} {...props}></textarea>);
