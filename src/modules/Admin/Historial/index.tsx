@@ -67,7 +67,10 @@ const Historial = (): JSX.Element => {
           <ul>
             {
              !loading ? assignments.map((assignment) => (
-              <li className="card" onClick={() => {
+              <li 
+                className="card"
+                key={assignment.id} 
+                onClick={() => {
                 history.push('/historial/informacion/' + assignment.id)
               }}>
                 <div className="assignment">

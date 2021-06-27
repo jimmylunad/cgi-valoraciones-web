@@ -55,7 +55,11 @@ const Information = (): JSX.Element => {
 
   return (
   <>
-    <Header link="/programaciones" loading={loading} title={"Valoración " + assignment.code } />
+    <Header 
+      link={ isLocalData ?  "/programaciones" : "/historial"} 
+      loading={loading} 
+      title={"Valoración " + assignment.code } 
+    />
     <div className="tab__wrapper">
       <Container maxWidth="md" className="tab__container">
         <Grid container className="summary" alignItems="center">
@@ -77,7 +81,7 @@ const Information = (): JSX.Element => {
           </Grid>
           <Grid item xs={6} className="detail__grid">
             <h6 className="detail__label">Fecha V.</h6>
-            <span className="detail__value">{assignment.name}</span>
+            <span className="detail__value">{assignment.date_attended}</span>
           </Grid>
           <Grid item xs={6} className="detail__grid">
             <h6 className="detail__label">Duración</h6>
