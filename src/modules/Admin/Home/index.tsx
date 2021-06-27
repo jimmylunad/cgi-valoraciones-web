@@ -19,11 +19,11 @@ type OptionsMenu = {
 }
 
 const Home = ():JSX.Element => {
-  const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token", "pendingAssignment"]);
   const history = useHistory();
   const MENU: OptionsMenu[] = [
-    { title: 'Valoraciones', subtitle: 'Listado', link: '/valoraciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
-    { title: 'Historial', subtitle: 'Valoraciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
+    { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
+    { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
     { title: 'Notificaciones', subtitle: 'Historial', link: '/notificaciones', icon: faBell, bg: '#c8f7f4', color: '#5ec6bd'},
     { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
   ];
@@ -69,7 +69,7 @@ const Home = ():JSX.Element => {
         <div className="card">
           <div className="card__title">
             <h1>Dashboard</h1>
-            <p>Tienes {cookies.pendingAssignment} valoraciones pendientes</p>
+            <p>Tienes {cookies.pendingAssignment} programaciones pendientes</p>
           </div>
           <ul className="menu">
             {

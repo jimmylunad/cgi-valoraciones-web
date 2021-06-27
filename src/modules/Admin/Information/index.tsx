@@ -55,7 +55,7 @@ const Information = (): JSX.Element => {
 
   return (
   <>
-    <Header link="/valoraciones" loading={loading} title={"Valoración " + assignment.code } />
+    <Header link="/programaciones" loading={loading} title={"Valoración " + assignment.code } />
     <div className="tab__wrapper">
       <Container maxWidth="md" className="tab__container">
         <Grid container className="summary" alignItems="center">
@@ -103,7 +103,7 @@ const Information = (): JSX.Element => {
           <Button 
             className="btn --outline-info"
             onClick={() => {
-              isLocalData ? history.push('/valoraciones/valoracion/' + params.index):
+              isLocalData ? history.push('/programaciones/valoracion/' + params.index):
               history.push('/historial/valoracion/' + params.id) 
             }}
           >

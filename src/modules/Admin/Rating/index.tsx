@@ -38,7 +38,7 @@ const Rating = (): JSX.Element => {
   <>
     <Header 
       link={
-        isLocalData ? '/valoraciones/informacion/' + params.index:
+        isLocalData ? '/programaciones/informacion/' + params.index:
         '/historial/informacion/' + params.id
       } 
       title={"Valoración " + (assignment.code || '')} 
