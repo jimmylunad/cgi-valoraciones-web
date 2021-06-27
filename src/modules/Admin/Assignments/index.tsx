@@ -35,7 +35,7 @@ const Valoraciones = (): JSX.Element => {
           <ul> 
             {
              assignments.map((assignment, index) => (
-                <li key={index*2} className="card" onClick={() => { history.push('/programaciones/informacion/' + index )}}>
+                <li key={index*2} className="card" onClick={() => { history.push('/programaciones/informacion/' + assignment.id )}}>
                   <div className="assignment">
                     <div className="assignment__ico">
                       <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>

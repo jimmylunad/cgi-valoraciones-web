@@ -39,7 +39,7 @@ const Information = (): JSX.Element => {
 
   const getDataStorage = () => {
     const assignments: any = localStorage.getItem("assignments");
-    setAssignment(JSON.parse(assignments)[params.index])
+    setAssignment(JSON.parse(assignments).find((e: { id: number; }) => e.id === parseInt(params.index)))
   }
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import { Container, Grid } from '@material-ui/core';
 import Header from 'shared/Header';
 import { Assignment } from 'types/assignment';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouteMatch } from 'react-router';
+import { useRouteMatch, useHistory } from 'react-router';
 import { FormLabel, FormSelect, FormTextarea  } from 'components/Form';
 import Footer from 'shared/Footer';
 import './styles.scss';
@@ -22,6 +22,7 @@ type QueryProps = {
 
 const Rating = (): JSX.Element => {
 
+  const history = useHistory();
   const { params } = useRouteMatch<QueryProps>();
   const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
   const [images, setImages] = useState<{preview: string, file: any}[]>([]);
@@ -57,7 +58,7 @@ const Rating = (): JSX.Element => {
 
   const getDataStorage = () => {
     const assignments: any = localStorage.getItem("assignments");
-    setAssignment(JSON.parse(assignments)[params.index])
+    setAssignment(JSON.parse(assignments).find((e: { id: number; }) => e.id === parseInt(params.index)));
   }
 
   const { 
@@ -140,6 +141,7 @@ const Rating = (): JSX.Element => {
       });
       setTimeout(() => {
         reset();
+        history.push('/');
       }, 4000);   
     }
   }, [submitPost]);
@@ -206,7 +208,7 @@ const Rating = (): JSX.Element => {
                       {...field} 
                       placeholder="Seleccionar"
                       className={"form-select " + (errors.id_option_1 ? '--error' : '')} 
-                      options={combo.options.map((e:any) => ({value: e.id, label: e.option, add_input: e.add_input }))} 
+                      options={combo.options.map((e:any) => ({value: e.id, label: e.option, add_input: e.addInput, input_title: e.inputTitle }))} 
                     />}
                   />
                 </Grid>
@@ -232,8 +234,8 @@ const Rating = (): JSX.Element => {
                 {
                   getValues('id_option_1')?.add_input &&
                   <Grid item xs={12}>
-                    <FormLabel> Observación</FormLabel>
-                    <FormTextarea {...register('observation')} placeholder="Ingresar observación"></FormTextarea>
+                    <FormLabel>{getValues('id_option_1')?.input_title}</FormLabel>
+                    <FormTextarea {...register('observation')} placeholder={`Ingresar ${(getValues('id_option_1')?.input_title).toLowerCase()}`}></FormTextarea>
                   </Grid>
                 }
                 <Grid container>

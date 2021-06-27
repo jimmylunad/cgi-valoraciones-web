@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { faBookmark, faHistory, faBell, faSignOutAlt, IconDefinition, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import { Container, Grid } from '@material-ui/core';
 import { useHistory } from 'react-router';
-import { useCookies } from 'react-cookie';
 import './styles.scss';
 import logo from '../../../images/logo.png';
 import useFetch from 'services/useFetch';
@@ -19,8 +19,8 @@ type OptionsMenu = {
 }
 
 const Home = ():JSX.Element => {
-  const [cookies] = useCookies(["token", "pendingAssignment"]);
   const history = useHistory();
+  const [isCounter, setCounter] = useState<boolean | null>(null);
   const MENU: OptionsMenu[] = [
     { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
     { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
@@ -42,6 +42,13 @@ const Home = ():JSX.Element => {
     }
   })
 
+  const { fetch: fetchCounter } = useFetch({
+    loading: true,
+    config: {
+      url: '/v1/app/assignment/counter'
+    }
+  })
+
   const getData = useCallback(async () => {
     const response = await fetch({}); 
     if (response.success) {
@@ -51,6 +58,11 @@ const Home = ():JSX.Element => {
     const responseCombo = await fetchCombo({});
     if (responseCombo.success) {
       localStorage.setItem('combo', JSON.stringify(responseCombo.data));
+    }
+
+    const responseCounter = await fetchCounter({});
+    if(responseCounter.success) {
+      setCounter(responseCounter.data.pendingAssignment);
     }
   }, []);
 
@@ -81,7 +93,7 @@ const Home = ():JSX.Element => {
         <div className="card">
           <div className="card__title">
             <h1>Dashboard</h1>
-            <p>Tienes {cookies.pendingAssignment} programaciones pendientes</p>
+            <p>Tienes {isCounter} programaciones pendientes</p>
           </div>
           <ul className="menu">
             {
