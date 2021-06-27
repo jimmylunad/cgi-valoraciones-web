@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faCamera,  faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCamera,  faCheckCircle, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
 import Header from 'shared/Header';
@@ -12,6 +12,7 @@ import './styles.scss';
 import { useForm, Controller } from 'react-hook-form';
 import useFetch from 'services/useFetch';
 import { Alert } from '@material-ui/lab';
+import Button from 'components/Button';
 
 type QueryProps = {
   id:string; // Consultar data
@@ -23,6 +24,7 @@ const Rating = (): JSX.Element => {
   const { params } = useRouteMatch<QueryProps>();
   const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
   const [previewImage, setPreviewImage] = useState<any>(null);
+  const [images, setImages] = useState<{preview: string, file: any}[]>([]);
   const [subOptions, setSuboptions] = useState<any>(null);
   const [requestStatus, setRequestStatus] = useState<null | boolean | string>(null);
   const [assignment, setAssignment] = useState<Assignment | any>({});
@@ -35,7 +37,7 @@ const Rating = (): JSX.Element => {
   })
 
   
-  const { fetch, loading } = useFetch({
+  const { fetch } = useFetch({
     loading: false,
     config: {
       url: '/v1/app/assignment/detail/' + params.id,
@@ -82,19 +84,27 @@ const Rating = (): JSX.Element => {
     return JSON.parse(assignments);
   }, []);
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      setValue("latitud", position.coords.latitude);
-      setValue("longitud", position.coords.longitude);      
-    });
-  },[]);
-
-  const onChange = (event:any) => {
-    const file:any = event.target.files[0];
-    // const [file] = imgInp.files
-    if (file) {
-      setPreviewImage(URL.createObjectURL(file))
+  const onChangeImages = (event:any) => {
+    let currentImages = [...images];
+    const files = event.target.files;
+    for (let index = 0; index < files.length; index++) {
+      
+      const file:any = files[index];
+      // const [file] = imgInp.files
+      if (file) {
+        currentImages.push({
+          preview: URL.createObjectURL(file),
+          file,
+        });
+        setImages(currentImages); 
+      }
     }
+  }
+
+  const onDeleteImages = (index:number)  =>{
+    let currentImages = [...images];
+    currentImages.splice(index, 1);
+    setImages(currentImages);
   }
 
   const onSubmit = useCallback(async (data:any) => {
@@ -124,6 +134,14 @@ const Rating = (): JSX.Element => {
       }, 4000);   
     }
   }, [submitPost]);
+
+  // Consulta de las coordenadas
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      setValue("latitud", position.coords.latitude);
+      setValue("longitud", position.coords.longitude);      
+    });
+  },[]);
 
   useEffect(() => {
     setValue("id_option_2", null);
@@ -182,7 +200,7 @@ const Rating = (): JSX.Element => {
             </Grid>
             {
               subOptions && subOptions.combos.map((option: any, index : number) => (
-                <Grid item xs={12}>
+                <Grid item xs={12} key={'option-' + option.id}>
                   <FormLabel>{"Seleccione " + (index + 2)}</FormLabel>
                   <Controller
                     name={"id_option_" + String(index + 2)}
@@ -207,17 +225,37 @@ const Rating = (): JSX.Element => {
                 <FormTextarea {...register('observation')} placeholder="Ingresar observación"></FormTextarea>
               </Grid>
             }
-            {
-              previewImage &&
-              <img className="form__preview" alt="foto" src={previewImage} />
-            }
-            <label className={"form__file w-90"}>
-              <input {...register("file")} onChange={onChange} type="file"></input>
-              <span className="btn --outline-info">
-                <FontAwesomeIcon icon={faCamera}></FontAwesomeIcon>
-                <span>TOMAR / CARGAR FOTO</span>
-              </span>
-            </label>
+
+            <Grid container>
+              <FormLabel>{"Evidencias"}</FormLabel>
+              <label className={"form__file w-90"}>
+                <input onChange={onChangeImages} accept="image/*" type="file" multiple></input>
+                <span className="btn --outline-info">
+                  <FontAwesomeIcon icon={faCamera}></FontAwesomeIcon>
+                  <span>TOMAR / CARGAR FOTO</span>
+                </span>
+                <br></br>
+                <br></br>
+              </label>
+            </Grid>
+
+            <Grid container className="form__preview">
+              {
+                images.map((image, index) => (
+                  <Grid item xs={4} key={index} >
+                    <div className="form__preview-wrapper" 
+                      style={{ background: `url('${image.preview}')`}}
+                    >
+                      <Button className={"btn --cancel"} onClick={() => {
+                        onDeleteImages(index)
+                      }}>
+                        <FontAwesomeIcon icon={faTimes} /> 
+                      </Button>
+                    </div>
+                  </Grid>
+                ))
+              }
+            </Grid>
           </Grid>
           
           {
@@ -233,8 +271,14 @@ const Rating = (): JSX.Element => {
             </>
           }
         </Container>
-        <Footer loading={loadingPost} type={"submit"} title={"Confirmar"} icon={faCheckCircle} onClick={() => {
-        }}></Footer>
+        <Footer 
+          loading={loadingPost} 
+          type={"submit"} 
+          title={"Siguiente"} 
+          icon={faCheckCircle} 
+          onClick={() => {
+          }}
+        />
       </div>
     </form>
 
