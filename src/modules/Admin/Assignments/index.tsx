@@ -47,6 +47,8 @@ const Valoraciones = (): JSX.Element => {
                       </div>
                       <div className="detail__inferior">
                         <p>{assignment.addresName}</p>
+                        <p>{assignment.routeName}</p>
+                        <p>{assignment.contractor}</p>
                       </div>
                     </div>
                   </div>

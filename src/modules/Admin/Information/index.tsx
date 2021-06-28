@@ -76,20 +76,20 @@ const Information = (): JSX.Element => {
             <h3 className="detail__title --blue">Detalle</h3>
           </Grid>
           <Grid item xs={6} className="detail__grid">
-            <h6 className="detail__label">Fecha R.</h6>
+            <h6 className="detail__label">Fecha Programación</h6>
             <span className="detail__value">{assignment.scheduledDate}</span>
           </Grid>
           <Grid item xs={6} className="detail__grid">
-            <h6 className="detail__label">Fecha V.</h6>
-            <span className="detail__value">{assignment.date_attended}</span>
-          </Grid>
-          <Grid item xs={6} className="detail__grid">
-            <h6 className="detail__label">Duración</h6>
-            <span className="detail__value">{"Duración"}</span>
+            <h6 className="detail__label">Fecha de Atención</h6>
+            <span className="detail__value">{assignment.date_attended || '-'}</span>
           </Grid>
           <Grid item xs={6} className="detail__grid">
             <h6 className="detail__label">Ruta</h6>
             <span className="detail__value">{assignment.routeName}</span>
+          </Grid>
+          <Grid item xs={6} className="detail__grid">
+            <h6 className="detail__label">Estado</h6>
+            <span className="detail__value">{'-'}</span>
           </Grid>
           <Grid item xs={12} className="detail__grid">
             <h6 className="detail__label">Contratista</h6>

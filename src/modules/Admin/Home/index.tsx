@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faBookmark, faHistory, faBell, faSignOutAlt, IconDefinition, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faHistory, faSignOutAlt, IconDefinition, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Container, Grid } from '@material-ui/core';
@@ -24,7 +24,6 @@ const Home = ():JSX.Element => {
   const MENU: OptionsMenu[] = [
     { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
     { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
-    { title: 'Notificaciones', subtitle: 'Historial', link: '/notificaciones', icon: faBell, bg: '#c8f7f4', color: '#5ec6bd'},
     { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
   ];
 
