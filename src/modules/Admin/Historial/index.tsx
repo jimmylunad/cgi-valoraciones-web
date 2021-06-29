@@ -64,6 +64,10 @@ const Historial = (): JSX.Element => {
           <h5>Historial de asignaciones</h5>
         </div>
         <div className="tab__list">
+          {
+            !loading && assignments.length === 0 && 
+            <p className="tab__empty">No tiene asignaciones pendientes</p>
+          }
           <ul>
             {
              !loading ? assignments.map((assignment, index) => (

@@ -8,6 +8,22 @@ import './styles.scss';
 import logo from '../../../images/logo.png';
 import useFetch from 'services/useFetch';
 import { useCallback, useEffect } from 'react';
+import Skeleton from '@material-ui/lab/Skeleton';
+
+const Loading = (): JSX.Element => (
+  <li className="list__option">
+    <Grid container>
+      <Grid item xs={2}>
+        <Skeleton height={50} width={30}></Skeleton>
+      </Grid>
+      <Grid item>
+        <Skeleton height={25} width={160}></Skeleton>
+        <Skeleton height={25} width={120}></Skeleton>
+      </Grid>
+    </Grid>
+    <br></br>
+  </li>
+)
 
 type OptionsMenu = {
   title:  string,
@@ -27,14 +43,14 @@ const Home = ():JSX.Element => {
     { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
   ];
 
-  const { fetch } = useFetch({
+  const { fetch, loading:loadingAssignment } = useFetch({
     loading: true,
     config: {
       url: '/v1/app/assignment?type=1',
     }
   })
 
-  const { fetch:fetchCombo } = useFetch({
+  const { fetch:fetchCombo, loading:loadingCombo } = useFetch({
     loading: true,
     config: {
       url: '/v1/app/assignment/combo',
@@ -92,10 +108,15 @@ const Home = ():JSX.Element => {
         <div className="card">
           <div className="card__title">
             <h1>Dashboard</h1>
-            <p>Tienes {isCounter} programaciones pendientes</p>
+            {
+            !loadingAssignment && !loadingCombo ?
+              <p>Tienes {isCounter} programaciones pendientes</p> :
+              <Skeleton height={20} width={180} />
+            }
           </div>
           <ul className="menu">
             {
+              !loadingAssignment && !loadingCombo ?
               MENU.map(option => (
                 <li 
                   className="menu__option" 
@@ -114,6 +135,10 @@ const Home = ():JSX.Element => {
                     </Grid>
                   </Grid>
                 </li>
+              ))
+              :
+              Array(3).fill(2).map((e, index) => (
+                <Loading key={index*2}/>
               ))
             }
           </ul>

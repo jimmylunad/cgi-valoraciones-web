@@ -32,6 +32,10 @@ const Valoraciones = (): JSX.Element => {
           <h5>Últimas asignaciones</h5>
         </div>
         <div className="tab__list">
+          {
+            assignments.length === 0 && 
+            <p className="tab__empty">No tiene asignaciones pendientes</p>
+          }
           <ul> 
             {
              assignments.map((assignment, index) => (

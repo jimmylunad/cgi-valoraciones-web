@@ -34,6 +34,14 @@
       }
     }
   }
+
+  &__empty {
+    margin: 10px 0 0;
+    color: $color-blue;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
+  }
 }
 
 .assignment {
