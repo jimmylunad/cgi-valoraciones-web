@@ -7,11 +7,12 @@ type FooterProps = {
   icon: IconDefinition,
   onClick?: (event:any) => void,
   type?: string,
+  iconColor?: string, 
   loading?:boolean,
   disabled?:boolean
 }
 
-const Footer = ({ title, icon, type, loading, onClick, ...props}: FooterProps) => {
+const Footer = ({ title, icon, type, loading, iconColor, onClick, ...props}: FooterProps) => {
   return (
     <div className="actions">
       <Button
@@ -22,10 +23,10 @@ const Footer = ({ title, icon, type, loading, onClick, ...props}: FooterProps) =
       >
          { 
           loading ? 
-            <FontAwesomeIcon icon={faSpinner} spin size="2x" color="#205390"/> : 
+            <FontAwesomeIcon icon={faSpinner} spin size="2x" color={"#205390"}/> : 
             <>
               <span>{title}</span>{" "}
-              <FontAwesomeIcon icon={icon} color="#205390" />
+              <FontAwesomeIcon icon={icon} color={iconColor || "#205390"} />
             </>
           }
       </Button>

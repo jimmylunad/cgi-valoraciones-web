@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faCamera, faChevronCircleRight, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faCheckCircle, faChevronCircleRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
 import Header from 'shared/Header';
@@ -77,9 +77,7 @@ const Rating = (): JSX.Element => {
   } = useForm<any>({
     defaultValues: {
       id: null,
-      id_option_1: null,
-      id_option_2: null, 
-      id_option_3: null, 
+      id_option: null,
       observation: null,
       latitud: null,
       longitud: null,
@@ -118,9 +116,7 @@ const Rating = (): JSX.Element => {
     if (!loadingPost) {
       const bodyFormData = new FormData();
       bodyFormData.set('id', data.id);
-      bodyFormData.set('id_option_1', data.id_option_1.value);
-      bodyFormData.set('id_option_2', data.id_option_2?.value || null);
-      bodyFormData.set('id_option_3', data.id_option_3?.value || null);
+      bodyFormData.set('id_option', data.id_option.value);
       bodyFormData.set('observation', data.observation);
       bodyFormData.set('latitud', data.latitud);
       bodyFormData.set('longitud', data.longitud);
@@ -158,19 +154,9 @@ const Rating = (): JSX.Element => {
   },[]);
 
   useEffect(() => {
-    // setValue("id_option_2", null);
-    // setValue("id_option_3", null);
-    setValue("observation", null);
-    // if (getValues('id_option_1')) {
-    //   const subOptions = combo.subOptions.find((e:any) => e.id === getValues('id_option_1').value);
-    //   if (subOptions) {
-    //     setSuboptions(subOptions);
-    //   } else {
-    //     setSuboptions(null);
-    //   }
-    // }
+    setValue("observation", null);  
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watch("id_option_1")]);
+  }, [watch("id_option")]);
 
   useEffect(() => {
     if (params.id) {
@@ -203,42 +189,23 @@ const Rating = (): JSX.Element => {
                 <Grid item xs={12}>
                   <FormLabel>{isRating ? 'Hallazgo' : 'Motivo' }</FormLabel>
                   <Controller
-                    name="id_option_1"
+                    name="id_option"
                     control={control}
                     rules={{ required: 'Please select an option'}}
                     render={({ field }) => 
                     <FormSelect 
                       {...field} 
                       placeholder="Seleccionar"
-                      className={"form-select " + (errors.id_option_1 ? '--error' : '')} 
+                      className={"form-select " + (errors.id_option ? '--error' : '')} 
                       options={combo.map((e:any) => ({value: e.id, label: e.option, add_input: e.addInput, input_title: e.inputTitle }))} 
                     />}
                   />
                 </Grid>
-                {/* {
-                  subOptions && subOptions.combos.map((option: any, index : number) => (
-                    <Grid item xs={12} key={'option-' + option.id}>
-                      <FormLabel>{"Seleccione " + (index + 2)}</FormLabel>
-                      <Controller
-                        name={"id_option_" + String(index + 2)}
-                        control={control}
-                        rules={{ required: 'Please select an option'}}
-                        render={({ field }) => 
-                        <FormSelect 
-                          {...field} 
-                          placeholder="Seleccionar"
-                          className={"form-select " + (errors['id_option_' + (index  + 2)] ? '--error' : '')} 
-                          options={option.map((e:any) => ({value: e.id, label: e.option }))} 
-                        />}
-                      />
-                    </Grid>
-                  ))
-                } */}
                 {
-                  getValues('id_option_1')?.add_input &&
+                  getValues('id_option')?.add_input &&
                   <Grid item xs={12}>
-                    <FormLabel>{getValues('id_option_1')?.input_title}</FormLabel>
-                    <FormTextarea {...register('observation')} placeholder={`Ingresar ${(getValues('id_option_1')?.input_title).toLowerCase()}`}></FormTextarea>
+                    <FormLabel>{getValues('id_option')?.input_title}</FormLabel>
+                    <FormTextarea {...register('observation')} placeholder={`Ingresar ${(getValues('id_option')?.input_title).toLowerCase()}`}></FormTextarea>
                   </Grid>
                 }
                 <Grid container>
@@ -311,8 +278,9 @@ const Rating = (): JSX.Element => {
             /> :
             <Footer 
               type={"submit"} 
-              title={"VALORAR"} 
-              icon={faChevronCircleRight} 
+              title={"GUARDAR"} 
+              iconColor="#0cc665"
+              icon={faCheckCircle} 
               loading={loadingPost}
             />          
         }

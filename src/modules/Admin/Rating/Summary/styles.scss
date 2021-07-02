@@ -1,3 +1,5 @@
+@import 'styles/theme/global-theme';
+
 hr {
   margin: 0
 }
@@ -13,4 +15,8 @@ p {
 
 .--mb-40 {
   margin-bottom: 60px !important;
+}
+
+.--blue {
+  color: $color-blue;
 }
