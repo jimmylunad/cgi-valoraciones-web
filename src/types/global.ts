@@ -5,3 +5,8 @@ export type RoutePage = {
   component: React.FC,
   protected?: boolean,
 }
+
+export enum ROLE {
+  "supervisor" = 'supervisor',
+  "operador" = 'operador',
+}

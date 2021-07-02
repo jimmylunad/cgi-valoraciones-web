@@ -9,6 +9,7 @@ import logo from '../../../images/logo.png';
 import useFetch from 'services/useFetch';
 import { useCallback, useEffect } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { ROLE } from 'types/global';
 
 const Loading = (): JSX.Element => (
   <li className="list__option">
@@ -34,14 +35,25 @@ type OptionsMenu = {
   color?: string,
 }
 
+type OptionsMenuRole = {
+ [name: string]: OptionsMenu[],
+}
+
 const Home = ():JSX.Element => {
   const history = useHistory();
   const [isCounter, setCounter] = useState<boolean | null>(null);
-  const MENU: OptionsMenu[] = [
-    { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
-    { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
-    { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
-  ];
+  const MENU: OptionsMenuRole = {
+    [`${ROLE.operador}`]: [
+      { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
+      { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
+      { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
+    ],
+    [`${ROLE.supervisor}`]: [
+      { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
+      { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
+      { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
+    ], 
+  }
 
   const { fetch, loading:loadingAssignment } = useFetch({
     loading: true,
