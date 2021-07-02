@@ -44,6 +44,7 @@ const Login = ():JSX.Element => {
       expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
       setCookie("token", response.data.token, { path: '/', expires });
       setCookie("pendingAssignment", response.data.pendingAssignment, { path: '/', expires });
+      localStorage.setItem("plate",response.data.plate);
       history.push('/');
     }
     return "";

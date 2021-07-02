@@ -16,9 +16,10 @@ const Loading = (): JSX.Element => (
   <li className="card">
     <Grid container>
       <Grid item xs={2}>
-        <Skeleton height={50} width={30}></Skeleton>
+        <Skeleton className="skeleton-image" height={50} width={30}></Skeleton>
       </Grid>
       <Grid item>
+        <Skeleton height={25} width={250}></Skeleton>
         <Skeleton height={25} width={250}></Skeleton>
         <Skeleton height={25} width={230}></Skeleton>
       </Grid>

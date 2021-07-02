@@ -45,7 +45,7 @@ const Home = ():JSX.Element => {
   const MENU: OptionsMenuRole = {
     [`${ROLE.operator}`]: [
       { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
-      { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
+      // { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
       { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
     ],
     [`${ROLE.supervisor}`]: [
@@ -121,7 +121,7 @@ const Home = ():JSX.Element => {
           <div className="card__title">
             <div className="title__box">
               <h1>Dashboard</h1>
-              <h2>GDH193</h2>
+              <h2>{localStorage.getItem("plate")}</h2>
             </div>
             {
             !loadingAssignment && !loadingCombo ?
