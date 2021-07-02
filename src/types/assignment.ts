@@ -8,4 +8,5 @@ export type Assignment = {
   scheduledDate: string;
   dateAttended: string;
   status: string;
+  availableOptions?:boolean;
 };

@@ -100,27 +100,30 @@ const Information = (): JSX.Element => {
             <span className="detail__value">{assignment.management}</span>
           </Grid>
         </Grid>
-        <div className="actions">
-          <Button
-            className="btn --reject"
-            onClick={() => {
-              isLocalData ? history.push('/programaciones/motivo/' + params.index):
-              history.push('/historial/programacion/' + params.id) 
-            }}
-          >
-            <FontAwesomeIcon icon={faTimes} color="#FFFFFF" />
-          </Button>
-          <Button 
-            className="btn --outline-info"
-            onClick={() => {
-              isLocalData ? history.push('/programaciones/programacion/' + params.index):
-              history.push('/historial/programacion/' + params.id) 
-            }}
-          >
-            <span>EJECUTAR</span>{" "}
-            <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
-          </Button>
-        </div>
+        {
+          assignment.availableOptions && 
+          <div className="actions">
+            <Button
+              className="btn --reject"
+              onClick={() => {
+                isLocalData ? history.push('/programaciones/motivo/' + params.index):
+                history.push('/historial/programacion/' + params.id) 
+              }}
+            >
+              <FontAwesomeIcon icon={faTimes} color="#FFFFFF" />
+            </Button>
+            <Button 
+              className="btn --outline-info"
+              onClick={() => {
+                isLocalData ? history.push('/programaciones/programacion/' + params.index):
+                history.push('/historial/programacion/' + params.id) 
+              }}
+            >
+              <span>EJECUTAR</span>{" "}
+              <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
+            </Button>
+          </div>
+        }
       </Container>
     </div>
   </>)
