@@ -9,10 +9,11 @@ type SummaryProps = {
   cancel: () => void,
   assignment: Assignment,
   form: any,
+  isRating:boolean | null,
   images: any[],
 }
 
-const Summary  = ({ success, cancel, assignment, form, images }: SummaryProps) => (
+const Summary  = ({ success, cancel, assignment, form, images, isRating }: SummaryProps) => (
   <>
     <Grid container className="summary" alignItems="center">
       <Grid item className="summary__icon">
@@ -33,7 +34,7 @@ const Summary  = ({ success, cancel, assignment, form, images }: SummaryProps) =
       </Grid>
       <Grid item xs={6} className="detail__grid">
         <h6 className="detail__label">Fecha de Atención</h6>
-        <span className="detail__value">{assignment.date_attended || '-'}</span>
+        <span className="detail__value">{assignment.dateAttended}</span>
       </Grid>
       <Grid item xs={6} className="detail__grid">
         <h6 className="detail__label">Ruta</h6>
@@ -41,7 +42,7 @@ const Summary  = ({ success, cancel, assignment, form, images }: SummaryProps) =
       </Grid>
       <Grid item xs={6} className="detail__grid">
         <h6 className="detail__label">Estado</h6>
-        <span className="detail__value">{"-"}</span>
+        <span className="detail__value">{assignment.status}</span>
       </Grid>
       <Grid item xs={12} className="detail__grid">
         <h6 className="detail__label">Contratista</h6>
@@ -56,16 +57,16 @@ const Summary  = ({ success, cancel, assignment, form, images }: SummaryProps) =
     <Grid container className="detail">
       <Grid item xs={12} className="detail__grid --mb">
         <br></br>
-        <h6 className="detail__label">Opciones seleccionadas</h6>
+        <h6 className="detail__label">{isRating ? 'Hallazgo': 'Motivo de cancelación'}</h6>
         { form.id_option_1 && 
           <p className="detail__value">{form.id_option_1.label}</p>
         }
-        { form.id_option_2 && 
+        {/* { form.id_option_2 && 
           <p className="detail__value">{form.id_option_2.label}</p>
         }
         { form.id_option_3 && 
           <p className="detail__value">{form.id_option_3.label}</p>
-        }
+        } */}
       </Grid>
 
       <Grid item xs={12} className="detail__grid --mb">

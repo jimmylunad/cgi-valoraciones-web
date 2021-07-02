@@ -22,11 +22,12 @@ type QueryProps = {
 
 const Rating = (): JSX.Element => {
 
-  const history = useHistory();
+  const history = useHistory<any>();
   const { params } = useRouteMatch<QueryProps>();
   const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
+  const [isRating, setIsRating] = useState<boolean | null>(null);
   const [images, setImages] = useState<{preview: string, file: any}[]>([]);
-  const [subOptions, setSuboptions] = useState<any>(null);
+  // const [subOptions, setSuboptions] = useState<any>(null);
   const [responseServer, setResponseServer] = useState<{
     severity: "success" | "error",
     message: string,
@@ -87,8 +88,8 @@ const Rating = (): JSX.Element => {
 
   const combo:any = useMemo((): Assignment[] => {
     const assignments: any = localStorage.getItem("combo");
-    return JSON.parse(assignments);
-  }, []);
+    return JSON.parse(assignments)[isRating ? 'findingOptions' : 'canceledOptions'];
+  }, [isRating]);
 
   const onChangeImages = (event:any) => {
     let currentImages = [...images];
@@ -152,20 +153,22 @@ const Rating = (): JSX.Element => {
       setValue("latitud", position.coords.latitude);
       setValue("longitud", position.coords.longitude);      
     });
+
+    setIsRating(history.location.pathname.includes('/programacion/'));
   },[]);
 
   useEffect(() => {
-    setValue("id_option_2", null);
-    setValue("id_option_3", null);
+    // setValue("id_option_2", null);
+    // setValue("id_option_3", null);
     setValue("observation", null);
-    if (getValues('id_option_1')) {
-      const subOptions = combo.subOptions.find((e:any) => e.id === getValues('id_option_1').value);
-      if (subOptions) {
-        setSuboptions(subOptions);
-      } else {
-        setSuboptions(null);
-      }
-    }
+    // if (getValues('id_option_1')) {
+    //   const subOptions = combo.subOptions.find((e:any) => e.id === getValues('id_option_1').value);
+    //   if (subOptions) {
+    //     setSuboptions(subOptions);
+    //   } else {
+    //     setSuboptions(null);
+    //   }
+    // }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch("id_option_1")]);
 
@@ -198,7 +201,7 @@ const Rating = (): JSX.Element => {
             <>
               <Grid container className="form" alignItems="center" justify="center">
                 <Grid item xs={12}>
-                  <FormLabel>Seleccione 1</FormLabel>
+                  <FormLabel>{isRating ? 'Hallazgo' : 'Motivo' }</FormLabel>
                   <Controller
                     name="id_option_1"
                     control={control}
@@ -208,11 +211,11 @@ const Rating = (): JSX.Element => {
                       {...field} 
                       placeholder="Seleccionar"
                       className={"form-select " + (errors.id_option_1 ? '--error' : '')} 
-                      options={combo.options.map((e:any) => ({value: e.id, label: e.option, add_input: e.addInput, input_title: e.inputTitle }))} 
+                      options={combo.map((e:any) => ({value: e.id, label: e.option, add_input: e.addInput, input_title: e.inputTitle }))} 
                     />}
                   />
                 </Grid>
-                {
+                {/* {
                   subOptions && subOptions.combos.map((option: any, index : number) => (
                     <Grid item xs={12} key={'option-' + option.id}>
                       <FormLabel>{"Seleccione " + (index + 2)}</FormLabel>
@@ -230,7 +233,7 @@ const Rating = (): JSX.Element => {
                       />
                     </Grid>
                   ))
-                }
+                } */}
                 {
                   getValues('id_option_1')?.add_input &&
                   <Grid item xs={12}>
@@ -277,6 +280,7 @@ const Rating = (): JSX.Element => {
               cancel={() => {}} 
               form={getValues()}
               images={images}
+              isRating={isRating}
             />
           }
           

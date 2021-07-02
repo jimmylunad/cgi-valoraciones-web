@@ -10,6 +10,7 @@ import Rating from "./Rating";
 const routes: RoutePage[] = [
   { path: '/programaciones/informacion/:index', component: Information },
   { path: '/programaciones/programacion/:index', component: Rating },
+  { path: '/programaciones/motivo/:index', component: Rating },
   { path: '/programaciones', component: Assignments },
   { path: '/historial/informacion/:id', component: Information },
   { path: '/historial/programacion/:id', component: Rating },

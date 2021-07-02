@@ -6,5 +6,6 @@ export type Assignment = {
   management: string;
   routeName: string;
   scheduledDate: string;
-  date_attended: string;
+  dateAttended: string;
+  status: string;
 };

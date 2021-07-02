@@ -8,5 +8,5 @@ export type RoutePage = {
 
 export enum ROLE {
   "supervisor" = 'supervisor',
-  "operador" = 'operador',
+  "operator" = 'operator',
 }

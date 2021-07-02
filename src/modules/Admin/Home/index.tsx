@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faBookmark, faHistory, faSignOutAlt, IconDefinition, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faSignOutAlt, IconDefinition, faUser, faHistory } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Container, Grid } from '@material-ui/core';
@@ -43,7 +43,7 @@ const Home = ():JSX.Element => {
   const history = useHistory();
   const [isCounter, setCounter] = useState<boolean | null>(null);
   const MENU: OptionsMenuRole = {
-    [`${ROLE.operador}`]: [
+    [`${ROLE.operator}`]: [
       { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
       { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
       { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
@@ -119,7 +119,10 @@ const Home = ():JSX.Element => {
       <Container maxWidth="md">
         <div className="card">
           <div className="card__title">
-            <h1>Dashboard</h1>
+            <div className="title__box">
+              <h1>Dashboard</h1>
+              <h2>GDH193</h2>
+            </div>
             {
             !loadingAssignment && !loadingCombo ?
               <p>Tienes {isCounter} programaciones pendientes</p> :
@@ -129,7 +132,7 @@ const Home = ():JSX.Element => {
           <ul className="menu">
             {
               !loadingAssignment && !loadingCombo ?
-              MENU.map(option => (
+              MENU[`${ROLE.operator}`].map(option => (
                 <li 
                   className="menu__option" 
                   key={option.link} 

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faChevronCircleRight, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { faChevronCircleRight, faTimes, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
 import Header from 'shared/Header';
@@ -76,12 +76,12 @@ const Information = (): JSX.Element => {
             <h3 className="detail__title --blue">Detalle</h3>
           </Grid>
           <Grid item xs={6} className="detail__grid">
-            <h6 className="detail__label">Fecha Programación</h6>
+            <h6 className="detail__label">Fecha Programada</h6>
             <span className="detail__value">{assignment.scheduledDate}</span>
           </Grid>
           <Grid item xs={6} className="detail__grid">
             <h6 className="detail__label">Fecha de Atención</h6>
-            <span className="detail__value">{assignment.date_attended || '-'}</span>
+            <span className="detail__value">{assignment.dateAttended}</span>
           </Grid>
           <Grid item xs={6} className="detail__grid">
             <h6 className="detail__label">Ruta</h6>
@@ -89,7 +89,7 @@ const Information = (): JSX.Element => {
           </Grid>
           <Grid item xs={6} className="detail__grid">
             <h6 className="detail__label">Estado</h6>
-            <span className="detail__value">{'-'}</span>
+            <span className="detail__value">{assignment.status}</span>
           </Grid>
           <Grid item xs={12} className="detail__grid">
             <h6 className="detail__label">Contratista</h6>
@@ -101,9 +101,15 @@ const Information = (): JSX.Element => {
           </Grid>
         </Grid>
         <div className="actions">
-          {/* <Button className="btn w-20 --outline-error">
-            <FontAwesomeIcon icon={faTimesCircle} color="#FF4A44" />
-          </Button> */}
+          <Button
+            className="btn --reject"
+            onClick={() => {
+              isLocalData ? history.push('/programaciones/motivo/' + params.index):
+              history.push('/historial/programacion/' + params.id) 
+            }}
+          >
+            <FontAwesomeIcon icon={faTimes} color="#FFFFFF" />
+          </Button>
           <Button 
             className="btn --outline-info"
             onClick={() => {
@@ -111,7 +117,7 @@ const Information = (): JSX.Element => {
               history.push('/historial/programacion/' + params.id) 
             }}
           >
-            <span>VALORAR</span>{" "}
+            <span>EJECUTAR</span>{" "}
             <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
           </Button>
         </div>

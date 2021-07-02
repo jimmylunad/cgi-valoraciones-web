@@ -24,7 +24,7 @@ const Valoraciones = (): JSX.Element => {
 
   return (
   <>
-    <Header link="/" title="Lista de programaciones" />
+    <Header link="/" title="Lista de Programaciones" />
     <div className="tab__wrapper">
       <Tabs options={OPTIONS_TABS} />
       <Container maxWidth="md" className="tab__container">
