@@ -33,7 +33,7 @@ const Summary  = ({ success, cancel, assignment, form, images }: SummaryProps) =
       </Grid>
       <Grid item xs={6} className="detail__grid">
         <h6 className="detail__label">Fecha de Atención</h6>
-        <span className="detail__value">{assignment.date_attended || '-'}</span>
+        <span className="detail__value">{assignment.dateAttended}</span>
       </Grid>
       <Grid item xs={6} className="detail__grid">
         <h6 className="detail__label">Ruta</h6>
@@ -41,7 +41,7 @@ const Summary  = ({ success, cancel, assignment, form, images }: SummaryProps) =
       </Grid>
       <Grid item xs={6} className="detail__grid">
         <h6 className="detail__label">Estado</h6>
-        <span className="detail__value">{"-"}</span>
+        <span className="detail__value">{assignment.status}</span>
       </Grid>
       <Grid item xs={12} className="detail__grid">
         <h6 className="detail__label">Contratista</h6>

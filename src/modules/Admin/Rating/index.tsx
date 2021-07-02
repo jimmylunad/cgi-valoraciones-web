@@ -26,7 +26,7 @@ const Rating = (): JSX.Element => {
   const { params } = useRouteMatch<QueryProps>();
   const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
   const [images, setImages] = useState<{preview: string, file: any}[]>([]);
-  const [subOptions, setSuboptions] = useState<any>(null);
+  // const [subOptions, setSuboptions] = useState<any>(null);
   const [responseServer, setResponseServer] = useState<{
     severity: "success" | "error",
     message: string,
@@ -155,17 +155,17 @@ const Rating = (): JSX.Element => {
   },[]);
 
   useEffect(() => {
-    setValue("id_option_2", null);
-    setValue("id_option_3", null);
+    // setValue("id_option_2", null);
+    // setValue("id_option_3", null);
     setValue("observation", null);
-    if (getValues('id_option_1')) {
-      const subOptions = combo.subOptions.find((e:any) => e.id === getValues('id_option_1').value);
-      if (subOptions) {
-        setSuboptions(subOptions);
-      } else {
-        setSuboptions(null);
-      }
-    }
+    // if (getValues('id_option_1')) {
+    //   const subOptions = combo.subOptions.find((e:any) => e.id === getValues('id_option_1').value);
+    //   if (subOptions) {
+    //     setSuboptions(subOptions);
+    //   } else {
+    //     setSuboptions(null);
+    //   }
+    // }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch("id_option_1")]);
 
@@ -212,7 +212,7 @@ const Rating = (): JSX.Element => {
                     />}
                   />
                 </Grid>
-                {
+                {/* {
                   subOptions && subOptions.combos.map((option: any, index : number) => (
                     <Grid item xs={12} key={'option-' + option.id}>
                       <FormLabel>{"Seleccione " + (index + 2)}</FormLabel>
@@ -230,7 +230,7 @@ const Rating = (): JSX.Element => {
                       />
                     </Grid>
                   ))
-                }
+                } */}
                 {
                   getValues('id_option_1')?.add_input &&
                   <Grid item xs={12}>
