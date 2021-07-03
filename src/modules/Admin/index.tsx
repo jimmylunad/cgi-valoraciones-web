@@ -1,13 +1,25 @@
-import React from 'react';
+import { AuthDataContext } from 'providers/Auth/provider';
+import { IAuthState } from 'providers/Auth/reducer';
+import { useContext, useEffect, useState } from 'react';
 import { Switch } from 'react-router';
+import ListenerProvider from 'shared/ListenerProvider';
 import RouterOutlet from 'shared/RouteOutlet';
+import { RoutePage } from 'types/global';
 import routes from './routes';
 
 const AdminModule: React.FC<{}> = () => {
+  const { role } = useContext<IAuthState>(AuthDataContext); 
+  const [activeRoutes, setActiveRoutes] = useState<RoutePage[] | null>(null);
+
+  useEffect(() => {
+    setActiveRoutes(routes[role]);
+  }, [role]);
+
   return (
+    activeRoutes &&
     <Switch>
       {
-        routes.map((route) => (
+        activeRoutes.map((route) => (
           <RouterOutlet key={route.path} {...route} />
         ))
       }
@@ -15,4 +27,4 @@ const AdminModule: React.FC<{}> = () => {
   )
 };
 
-export default AdminModule;
+export default ListenerProvider()(AdminModule);

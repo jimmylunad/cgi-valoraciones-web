@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faBookmark, faSignOutAlt, IconDefinition, faUser, faHistory } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faSignOutAlt, IconDefinition, faUser, faBell } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Container, Grid } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import './styles.scss';
@@ -10,6 +10,8 @@ import useFetch from 'services/useFetch';
 import { useCallback, useEffect } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { ROLE } from 'types/global';
+import { AuthDataContext } from 'providers/Auth/provider';
+import { IAuthState } from 'providers/Auth/reducer';
 
 const Loading = (): JSX.Element => (
   <li className="list__option">
@@ -41,6 +43,7 @@ type OptionsMenuRole = {
 
 const Home = ():JSX.Element => {
   const history = useHistory();
+  const { plate, role } = useContext<IAuthState>(AuthDataContext);
   const [isCounter, setCounter] = useState<boolean | null>(null);
   const MENU: OptionsMenuRole = {
     [`${ROLE.operator}`]: [
@@ -50,7 +53,7 @@ const Home = ():JSX.Element => {
     ],
     [`${ROLE.supervisor}`]: [
       { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
-      { title: 'Historial', subtitle: 'Programaciones', link: '/historial', icon: faHistory, bg: '#fdf4dd', color: '#f4a832' },
+      { title: 'Nueva', subtitle: 'Programación', link: '/nueva-programacion', icon: faBell, bg: '#befaf4', color: '#3bccc0' },
       { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
     ], 
   }
@@ -121,7 +124,7 @@ const Home = ():JSX.Element => {
           <div className="card__title">
             <div className="title__box">
               <h1>Dashboard</h1>
-              <h2>{localStorage.getItem("plate")}</h2>
+              <h2>{plate}</h2>
             </div>
             {
             !loadingAssignment && !loadingCombo ?
@@ -132,7 +135,7 @@ const Home = ():JSX.Element => {
           <ul className="menu">
             {
               !loadingAssignment && !loadingCombo ?
-              MENU[`${ROLE.operator}`].map(option => (
+              MENU[role].map(option => (
                 <li 
                   className="menu__option" 
                   key={option.link} 

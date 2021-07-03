@@ -11,11 +11,13 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useCookies } from 'react-cookie';
 import "./styles.scss";
 import logo from "./../../../images/logo.png";
+import useAuthActions from 'providers/Auth/actions';
 
 const Login = ():JSX.Element => {
   const [cookies, setCookie] = useCookies(["token", "pendingAssignment"]);
   const history = useHistory();
   const [errorServer, setErrorServer] = useState<string | null>(null);
+  const { setAuthLogin } = useAuthActions();
 
   const { 
     register, 
@@ -40,6 +42,8 @@ const Login = ():JSX.Element => {
     if (!response.success) {
       setErrorServer(response.message);
     } else {
+
+      setAuthLogin(response.data);
       let expires = new Date()
       expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
       setCookie("token", response.data.token, { path: '/', expires });
@@ -48,7 +52,7 @@ const Login = ():JSX.Element => {
       history.push('/');
     }
     return "";
-  }, [fetch, history, setCookie]);
+  }, [fetch, history, setCookie, setAuthLogin]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

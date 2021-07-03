@@ -4,6 +4,7 @@ import RouterOutlet from 'shared/RouteOutlet';
 import routes from './routes';
 import { useCookies } from 'react-cookie';
 import './styles.scss'
+import ListenerProvider from 'shared/ListenerProvider';
 
 const AuthModule: React.FC<{}> = () => {
   const [cookies] = useCookies(["token"]);
@@ -13,7 +14,8 @@ const AuthModule: React.FC<{}> = () => {
     if (cookies['token']) {
       history.push('/');
     }
-  }, [cookies, history])
+  }, [cookies, history]);
+  
   return (
     <div className="bg_login">
       <Switch>
@@ -27,4 +29,4 @@ const AuthModule: React.FC<{}> = () => {
   )
 };
 
-export default AuthModule;
+export default ListenerProvider()(AuthModule);

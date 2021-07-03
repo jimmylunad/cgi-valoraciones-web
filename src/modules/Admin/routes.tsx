@@ -1,4 +1,4 @@
-import { RoutePage } from "types/global";
+import { ROLE, RoutePage, RoutePageRole } from "types/global";
 import Historial from "./Historial";
 import Home from "./Home";
 import Logout from "./Logout";
@@ -7,7 +7,7 @@ import Assignments from "./Assignments";
 import Information from "./Information";
 import Rating from "./Rating";
 
-const routes: RoutePage[] = [
+const ROUTES_OPERATOR: RoutePage[] = [
   { path: '/programaciones/informacion/:index', component: Information },
   { path: '/programaciones/programacion/:index', component: Rating },
   { path: '/programaciones/motivo/:index', component: Rating },
@@ -19,5 +19,16 @@ const routes: RoutePage[] = [
   { path: '/logout', component: Logout },
   { path: '/', component: Home },
 ];
+
+const ROUTES_SUPERVISOR: RoutePage[] = [
+  { path: '/programaciones', component: Assignments },
+  { path: '/logout', component: Logout },
+  { path: '/', component: Home },
+];
+
+const routes: RoutePageRole = {
+  [`${ROLE.operator}`]: ROUTES_OPERATOR,
+  [`${ROLE.supervisor}`]: ROUTES_SUPERVISOR,
+} 
 
 export default routes;
