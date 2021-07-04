@@ -1,6 +1,7 @@
 import { faClipboardList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Container } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
+import Button from "components/Button";
 import { useMemo } from "react";
 import { useHistory } from "react-router";
 import Header from "shared/Header";
@@ -26,14 +27,22 @@ const SupervisorAssignments = (): JSX.Element => {
     <div className="tab__wrapper">
       <Tabs options={OPTIONS_TABS} />
       <Container maxWidth="md" className="tab__container">
-        <div className="tab__title">
-          <h5>Últimas asignaciones</h5>
-        </div>
         <div className="tab__list">
-          {
+          {/* {
             assignments.length === 0 && 
             <p className="tab__empty">No tiene asignaciones pendientes</p>
-          }
+          } */}
+          <Grid container className="filters_buttons">
+            <Grid xs={6}>
+              <Button className="btn --blue w-98">
+                <span>51</span> Realizadas
+              </Button>
+            </Grid>
+            <Grid container xs={6} justify="flex-end">
+              <Button className="btn --yellow w-98"><span>180</span> Programadas</Button>
+              <Button className="btn --red w-98"><span>35</span> No realizadas</Button>
+            </Grid>
+          </Grid>
           <ul> 
             {
              assignments.map((assignment, index) => (

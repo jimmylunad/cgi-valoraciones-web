@@ -9,22 +9,46 @@
   border: 1px solid $color-gray;
   background-color: #f2f7f8;
   margin-bottom: 16px;
+  cursor: pointer;
+  transition: 0.2s all linear;
   &.--primary {
     background-color: $color-primary;
     color: #fff;
+    border: 2px solid $color-primary;
+    &:hover {
+      border-color: #08944b;
+    }
+    &:active {
+      background-color: #08944b;
+    }
   }
   &.--cancel {
     background-color: #ffe2e5;
     color: $color-error;
+    border: 2px solid #ffe2e5;
+    &:hover {
+      border-color: #ff9b98;
+    }
+    &:active {
+      background-color: #ff9b98;
+    }
   }
   &.--outline-error {
     background-color: white;
-    border-color: $color-error;    
+    border-color: $color-error;
+    color: $color-error;
+    &:hover {
+      background-color: #fce4e4;
+    }
   }
   &.--outline-info {
     background-color: white;
     border-color: $color-blue;    
     color: $color-blue;
+    border: 1px solid $color-blue;
+    &:hover {
+      background-color: #f4f9ff;
+    }
   }
   &.--reject {
     background-color: $color-error;
@@ -32,5 +56,9 @@
     border: 0;
     width: 48px;
     margin-right: 15px;
+    border: 2px solid $color-error;
+    &:hover {
+      border-color: #b60303;
+    }
   }
 }

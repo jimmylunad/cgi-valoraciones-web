@@ -1,0 +1,37 @@
+@import 'styles/theme/global-theme';
+
+.list-options {
+  list-style: none;
+  margin-left: 0;
+  li {
+    border: 1px solid $color-gray;
+    background-color: white;
+    padding: 0 8px;
+    border-top: none;
+    color: $color-text;
+    &:first-child {
+      border: 1px solid $color-blue;
+      background-color: $color-blue;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      color: white;
+    }
+    &:last-child {
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+  }
+
+  .form-grid-checkbox {
+    border-right: 1px solid $color-gray;
+    padding: 12px;
+  }
+  
+  .form-grid-item {
+    padding-left: 8px;
+    span {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

@@ -76,3 +76,37 @@
     }
   }
 }
+
+.filters_buttons {
+  margin-top: 24px;
+  .btn {
+    color: white;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      font-size: 24px;
+      margin-right: 8px;;
+    }
+  }
+
+  .--blue {
+    height:136px;
+    background-color: $color-blue;
+    font-size: 28px;
+    flex-direction: column;
+    span {
+      font-size: 40px;
+    }
+  }
+
+  .--yellow {
+    background-color: $color-yellow;
+    margin-bottom: 8px;
+  }
+
+  .--red {
+    background-color: $color-error;
+  }
+}
