@@ -10,3 +10,19 @@ export type Assignment = {
   status: string;
   availableOptions?:boolean;
 };
+
+
+export type Option = {
+  value: number;
+  option: string;
+};
+
+export interface OptionsAssignment {
+  date: Option[];
+  flote: Option[]; 
+  route: Option[];
+  contractor: Option[];
+  management: Option[];
+  plate?:Option[];
+  address?:Option[];
+}

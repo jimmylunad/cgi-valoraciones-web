@@ -11,6 +11,10 @@ FormInput.defaultProps = {
 
 type FormCheckboxProps = {
   children: string,
+  name?: string;
+  id?:string;
+  checked?: boolean;
+  onChange?: (event:any) => void
 }
 
 export const FormCheckbox = ({children, ...props }:FormCheckboxProps) => (

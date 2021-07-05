@@ -3,6 +3,7 @@
 .list-options {
   list-style: none;
   margin-left: 0;
+  margin-bottom: 16px;
   li {
     border: 1px solid $color-gray;
     background-color: white;
@@ -28,10 +29,14 @@
   }
   
   .form-grid-item {
-    padding-left: 8px;
+    padding: 8px;
     span {
       width: 100%;
       text-align: center;
+    }
+    &.--center {
+      display: flex;
+      justify-content: center;
     }
   }
 }
