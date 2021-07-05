@@ -52,7 +52,7 @@ const Home = ():JSX.Element => {
       { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
     ],
     [`${ROLE.supervisor}`]: [
-      { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
+      { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones/1', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
       { title: 'Nueva', subtitle: 'Programación', link: '/programaciones/nueva', icon: faBell, bg: '#befaf4', color: '#3bccc0' },
       { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
     ], 

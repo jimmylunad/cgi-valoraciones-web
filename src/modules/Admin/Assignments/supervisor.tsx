@@ -5,7 +5,7 @@ import { Container, Grid } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import Button from "components/Button";
 import { useCallback, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import useFetch from "services/useFetch";
 import Header from "shared/Header";
 import Tabs, { TabOption } from "shared/Tabs";
@@ -29,6 +29,7 @@ const Loading = (): JSX.Element => (
 const SupervisorAssignments = (): JSX.Element => {
   
   const history = useHistory();
+  const { id:idType } = useParams<{ id: string}>();
   const [currentFilter, setCurrentFilter] = useState<string>("doned");
   const [dashboardData, setDashboardData] = useState<{
     canceled: number;
@@ -36,13 +37,13 @@ const SupervisorAssignments = (): JSX.Element => {
     scheduled: number;
   }>();
   const OPTIONS_TABS: TabOption[] = [
-    {title: 'HOY', link: '/programaciones'},
-    {title: 'Semana', link: '/semana'},
+    {title: 'HOY', link: '/programaciones/1'},
+    {title: 'Semana', link: '/programaciones/2'},
   ];
 
   const [assignments, setAssignments] = useState<Assignment[]>([]);
 
-  const { fetch } = useFetch({
+  const { fetch, loading } = useFetch({
     loading: true,
     config: {
       url: '/v1/app/supervisor/dashboard',
@@ -59,7 +60,7 @@ const SupervisorAssignments = (): JSX.Element => {
   const getDashboard = useCallback(async () => {
     const response = await fetch({
       params: {
-        type: 1,
+        type: idType,
       }
     })
 
@@ -69,7 +70,7 @@ const SupervisorAssignments = (): JSX.Element => {
   const getData = useCallback(async () => {
     const response = await fetchData({
       params: {
-        type: 1,
+        type: idType,
         show: currentFilter
       }
     })
@@ -77,12 +78,18 @@ const SupervisorAssignments = (): JSX.Element => {
   }, [currentFilter])
 
   useEffect(() => {
-    getData();
+    if (currentFilter !== "")
+      getData();
   }, [currentFilter])
 
   useEffect(() => {
+    setCurrentFilter("");
+    setTimeout(() => {
+      setCurrentFilter("doned");
+    }, 100);
     getDashboard();
-  }, [])
+  },[idType])
+
 
   return (
   <>
@@ -98,18 +105,35 @@ const SupervisorAssignments = (): JSX.Element => {
                 className="btn --blue w-98"
                 onClick={() => {setCurrentFilter('doned')}}
               >
-                <span>{dashboardData?.doned}</span> Realizadas
+                {loading ? <Skeleton height={50} width={50}></Skeleton> : 
+                  <>
+                    <span>{dashboardData?.doned}</span> Realizadas
+                  </>
+                }
               </Button>
             </Grid>
             <Grid container xs={6} justify="flex-end">
               <Button 
                 className="btn --yellow w-98"
                 onClick={() => {setCurrentFilter('scheduled')}}
-                ><span>{dashboardData?.scheduled}</span> Programadas</Button>
+                >
+                   {loading ? <Skeleton height={50} width={50}></Skeleton> : 
+                    <>
+                     <span>{dashboardData?.scheduled}</span> Programadas
+                    </>
+                   }
+              </Button>
               <Button 
                 className="btn --red w-98"
                 onClick={() => {setCurrentFilter('canceled')}}
-              ><span>{dashboardData?.canceled}</span> No realizadas</Button>
+              >
+                {
+                  loading ? <Skeleton height={50} width={50}></Skeleton> : 
+                  <>
+                    <span>{dashboardData?.canceled}</span> No realizadas
+                  </>
+                }
+              </Button>
             </Grid>
           </Grid>
           {

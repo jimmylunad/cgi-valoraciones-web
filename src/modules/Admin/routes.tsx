@@ -27,7 +27,7 @@ const ROUTES_SUPERVISOR: RoutePage[] = [
   { path: '/programaciones/motivo/:index', component: Rating },
   { path: '/programaciones/reprogramacion/:index', component: AssignmentRepro },
   { path: '/programaciones/nueva', component: AssignmentNew },
-  { path: '/programaciones', component: Assignments },
+  { path: '/programaciones/:id', component: Assignments },
   { path: '/logout', component: Logout },
   { path: '/', component: Home },
 ];
