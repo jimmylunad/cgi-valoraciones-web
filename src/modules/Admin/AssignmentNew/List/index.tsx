@@ -2,16 +2,17 @@
 import { Grid } from "@material-ui/core"
 import { FormCheckbox, FormLabel } from "components/Form"
 import { useCallback, useEffect, useState } from "react";
+import { optionCSS } from "react-select/src/components/Option";
 import { Option } from "types/assignment"
 
 type ListOptions = {
   options: Option[],
-  prefixName: number;
+  updateAddress: (values: {[value: string]: boolean}[]) => void
 }
 
 const List = ({
   options,
-  prefixName,
+  updateAddress,
 }: ListOptions) => {
 
   const [selecteds, setSelecteds] = useState<{[value: string]: boolean}>({}); 
@@ -36,9 +37,11 @@ const List = ({
   
 
   useEffect(() => {
-    const values = Object.keys(selecteds);
-    const currentCheckeds: boolean = checkAll(values);   
-    setAll(currentCheckeds);
+    if (options && options.length > 0 ) {
+      const values = Object.keys(selecteds);
+      const currentCheckeds: boolean = checkAll(values);   
+      setAll(currentCheckeds);
+    }
   }, [checkAll, selecteds])
 
   const handleAllChange = () => {
@@ -56,8 +59,21 @@ const List = ({
   }
 
   useEffect(() => {
-    setSelecteds({})
+    setAll(false);
   }, [options]);
+
+  useEffect(() => {
+
+    let nextAddress: any = [];
+    Object.keys(selecteds).forEach(value => {
+      if (selecteds[value]) {
+        nextAddress.push({
+          id_address: value
+        })
+      }
+    });
+    updateAddress(nextAddress.length > 0 ? nextAddress : null);
+  },[selecteds, updateAddress]);
 
   return (
     <>

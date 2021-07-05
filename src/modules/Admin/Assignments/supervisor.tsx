@@ -2,8 +2,9 @@ import { faClipboardList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container, Grid } from "@material-ui/core";
 import Button from "components/Button";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router";
+import useFetch from "services/useFetch";
 import Header from "shared/Header";
 import Tabs, { TabOption } from "shared/Tabs";
 import { Assignment } from "types/assignment";
@@ -11,15 +12,35 @@ import { Assignment } from "types/assignment";
 const SupervisorAssignments = (): JSX.Element => {
   
   const history = useHistory();
+  const [currentFilter, setCurrentFilter] = useState<string>('doned');
   const OPTIONS_TABS: TabOption[] = [
     {title: 'HOY', link: '/programaciones'},
     {title: 'Semana', link: '/semana'},
   ];
 
-  const assignments = useMemo((): Assignment[] => {
-    const assignments: any = localStorage.getItem("assignments");
-    return JSON.parse(assignments);
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+
+  const { fetch, loading } = useFetch({
+    loading: true,
+    config: {
+      url: '/v1/app/supervisor/dashboard',
+    }
+  })
+
+  const getData = useCallback(async () => {
+    const response = await fetch({
+      params: {
+        type: currentFilter
+      }
+    })
+
+    // setAssignments(response.data);
+    console.log("response", response)
   }, []);
+
+  useEffect(() => {
+    getData();
+  }, [currentFilter, getData])
 
   return (
   <>
