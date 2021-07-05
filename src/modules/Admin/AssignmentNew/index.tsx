@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
 import { Container, Grid } from "@material-ui/core";
 import useFetch from "services/useFetch";
@@ -50,7 +51,6 @@ const AssignmentNew = (): JSX.Element => {
     reset,
     formState: { 
       errors,
-      isValid,
     } 
   } = useForm<any>({
     defaultValues: {

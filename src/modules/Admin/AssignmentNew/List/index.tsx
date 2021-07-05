@@ -42,7 +42,7 @@ const List = ({
       const currentCheckeds: boolean = checkAll(values);   
       setAll(currentCheckeds);
     }
-  }, [checkAll, selecteds])
+  }, [checkAll, options, selecteds])
 
   const handleAllChange = () => {
 

@@ -8,16 +8,10 @@ import Header from "shared/Header";
 
 const AssignmentRepro = (): JSX.Element => {
   const { 
-    register, 
     handleSubmit, 
-    watch,
-    setValue,
-    getValues,
     control,
-    reset,
     formState: { 
       errors,
-      isValid,
     } 
   } = useForm<any>({
     defaultValues: {

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { faClipboardList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container, Grid } from "@material-ui/core";
@@ -41,7 +42,7 @@ const SupervisorAssignments = (): JSX.Element => {
 
   const [assignments, setAssignments] = useState<Assignment[]>([]);
 
-  const { fetch, loading } = useFetch({
+  const { fetch } = useFetch({
     loading: true,
     config: {
       url: '/v1/app/supervisor/dashboard',
