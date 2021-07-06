@@ -47,7 +47,7 @@ const Information = (): JSX.Element => {
   }
 
   useEffect(() => {
-    if (params.id) {
+    if (params.id || role === ROLE.supervisor) {
       setIsLocalData(false);
       getData();
     } else {

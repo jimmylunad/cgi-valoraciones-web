@@ -1,14 +1,12 @@
-import { faCalendar, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { Container, Grid } from "@material-ui/core";
-import { useCallback, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useState } from "react";
 import { SingleDatePicker } from 'react-dates';
 import Footer from "shared/Footer";
 import Header from "shared/Header";
 import moment from "moment";
 import './styles.scss';
 import { FormLabel } from "components/Form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useFetch from "services/useFetch";
 import { useHistory, useParams } from "react-router";
 import { Alert } from "@material-ui/lab";
@@ -51,11 +49,11 @@ const AssignmentRepro = (): JSX.Element => {
         history.push('/');
       }, 4000);
     }
-  }, []);
+  }, [date, fetch, history, params.id]);
 
   return (
     <>
-      <Header link="/" title="Programación" />
+      <Header link={'/programaciones/informacion/' + params.id} title="Programación" />
       <form onSubmit={onSubmit} >
         <div className="tab__wrapper">
           <Container maxWidth="md" className="tab__container">
@@ -90,6 +88,7 @@ const AssignmentRepro = (): JSX.Element => {
             type={"submit"} 
             title={"GUARDAR"} 
             icon={faCheckCircle} 
+            iconColor="#0cc665"
             loading={loading}
             onClick={(event:any) => {
               
