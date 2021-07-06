@@ -96,17 +96,29 @@
     background-color: $color-blue;
     font-size: 28px;
     flex-direction: column;
+    border: 3px solid $color-blue;
     span {
       font-size: 40px;
     }
+    &.--active, &:hover {
+      border-color: #3892ff;
+    }
   }
-
+  
   .--yellow {
     background-color: $color-yellow;
     margin-bottom: 8px;
+    border: 3px solid $color-yellow;
+    &.--active, &:hover{
+      border-color: #b87000;
+    }
   }
 
   .--red {
     background-color: $color-error;
+    border: 3px solid $color-error;
+    &.--active, &:hover {
+      border-color: #b91813;
+    }
   }
 }

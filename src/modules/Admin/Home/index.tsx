@@ -72,6 +72,13 @@ const Home = ():JSX.Element => {
     }
   })
 
+  const { fetch:fetchDates, loading:loadingDates } = useFetch({
+    loading: true,
+    config: {
+      url: '/v1/app/assignment/schedule',
+    }
+  })
+
   const { fetch: fetchCounter } = useFetch({
     loading: true,
     config: {
@@ -93,6 +100,11 @@ const Home = ():JSX.Element => {
     const responseCounter = await fetchCounter({});
     if(responseCounter.success) {
       setCounter(responseCounter.data.pendingAssignment);
+    }
+
+    const responseDates = await fetchDates({});
+    if (responseDates.success) {
+      localStorage.setItem('dates', JSON.stringify(responseDates.data));
     }
   }, []);
 
@@ -134,7 +146,7 @@ const Home = ():JSX.Element => {
           </div>
           <ul className="menu">
             {
-              !loadingAssignment && !loadingCombo ?
+              !loadingAssignment && !loadingCombo && !loadingDates ?
               MENU[role].map(option => (
                 <li 
                   className="menu__option" 

@@ -102,7 +102,7 @@ const SupervisorAssignments = (): JSX.Element => {
           <Grid container className="filters_buttons">
             <Grid xs={6}>
               <Button 
-                className="btn --blue w-98"
+                className={`btn --blue w-98 ${currentFilter === 'doned' ? '--active' : ''}`}
                 onClick={() => {setCurrentFilter('doned')}}
               >
                 {loading ? <Skeleton height={50} width={50}></Skeleton> : 
@@ -114,7 +114,7 @@ const SupervisorAssignments = (): JSX.Element => {
             </Grid>
             <Grid container xs={6} justify="flex-end">
               <Button 
-                className="btn --yellow w-98"
+                className={`btn --yellow w-98 ${currentFilter === 'scheduled' ? '--active' : ''}`}
                 onClick={() => {setCurrentFilter('scheduled')}}
                 >
                    {loading ? <Skeleton height={50} width={50}></Skeleton> : 
@@ -124,7 +124,7 @@ const SupervisorAssignments = (): JSX.Element => {
                    }
               </Button>
               <Button 
-                className="btn --red w-98"
+                className={`btn --red w-98 ${currentFilter === 'canceled' ? '--active' : ''}`}
                 onClick={() => {setCurrentFilter('canceled')}}
               >
                 {

@@ -22,6 +22,11 @@ const OperatorAssignments = (): JSX.Element => {
     return JSON.parse(assignments);
   }, []);
 
+  const dates = useMemo((): Assignment[] => {
+    const assignments: any = localStorage.getItem("dates");
+    return JSON.parse(assignments);
+  }, []);
+
   return (
   <>
     <Header link="/" title="Lista de Programaciones" />
