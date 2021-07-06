@@ -12,6 +12,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { ROLE } from 'types/global';
 import { AuthDataContext } from 'providers/Auth/provider';
 import { IAuthState } from 'providers/Auth/reducer';
+import { Offline } from "react-detect-offline";
 
 const Loading = (): JSX.Element => (
   <li className="list__option">
@@ -171,6 +172,24 @@ const Home = ():JSX.Element => {
                 <Loading key={index*2}/>
               ))
             }
+            <Offline>
+              <li
+                className="menu__option"
+                onClick={() => {
+                  console.log('estamos offline', () => 'hola');
+                }}
+              >
+                <Grid container alignItems="center" > 
+                  <Grid item className="menu__icon" style={{background: '#ad24ad'}}> 
+                    <FontAwesomeIcon icon={faSignOutAlt} color="#FFFFFF"></FontAwesomeIcon>               
+                  </Grid>
+                  <Grid item xs={8}>
+                    <p>Subir datos</p>
+                    <h6>Offline</h6>
+                  </Grid>
+                </Grid>
+              </li>
+            </Offline>
           </ul>
         </div>
       </Container>
