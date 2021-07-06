@@ -11,6 +11,7 @@ import AssignmentRepro from "./AssignmentRepro";
 
 const ROUTES_OPERATOR: RoutePage[] = [
   { path: '/programaciones/informacion/:index', component: Information },
+  { path: '/programaciones/f-informacion/:id', component: Information },
   { path: '/programaciones/programacion/:index', component: Rating },
   { path: '/programaciones/motivo/:index', component: Rating },
   { path: '/programaciones', component: Assignments },

@@ -31,7 +31,8 @@ const Loading = (): JSX.Element => (
 const OperatorAssignments = (): JSX.Element => {
 
   const history = useHistory();
-  const [assignments, setAssignments] = useState<Assignment[] | any>([])
+  const [assignments, setAssignments] = useState<Assignment[] | any>([]);
+  const [isFilter, setIsFilter] = useState<boolean>(false);
   const OPTIONS_TABS: TabOption[] = [
     {title: 'INICIO', link: '/programaciones'},
     {title: 'HISTORIAL', link: '/historial'},
@@ -50,7 +51,8 @@ const OperatorAssignments = (): JSX.Element => {
     return JSON.parse(assignments);
   }, []);
 
-  const handleChange = async(event:any) => {    
+  const handleChange = async(event:any) => {  
+    setIsFilter(!!event);
     const response = await fetch({
       params: {
         type: 1,
@@ -96,7 +98,14 @@ const OperatorAssignments = (): JSX.Element => {
           <ul> 
             {
              !loading ? assignments.map((assignment: Assignment, index: number) => (
-                <li key={index*2} className="card" onClick={() => { history.push('/programaciones/informacion/' + assignment.id )}}>
+                <li key={index*2} className="card" 
+                  onClick={() => { 
+                    if (!isFilter) {
+                      history.push('/programaciones/informacion/' + assignment.id)
+                    } else {
+                      history.push('/programaciones/f-informacion/' + assignment.id)
+                    }
+                  }}>
                   <div className="assignment">
                     <div className="assignment__ico">
                       <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>
