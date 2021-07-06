@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { Container, Grid } from "@material-ui/core";
 import { useCallback, useEffect, useState } from "react";
@@ -5,12 +6,12 @@ import { SingleDatePicker } from 'react-dates';
 import Footer from "shared/Footer";
 import Header from "shared/Header";
 import moment from "moment";
-import './styles.scss';
 import { FormLabel } from "components/Form";
 import useFetch from "services/useFetch";
 import { useHistory, useParams } from "react-router";
 import { Alert } from "@material-ui/lab";
 import { Assignment } from "types/assignment";
+import './styles.scss';
 
 moment.locale('es');
 
