@@ -93,32 +93,29 @@
 
   .--blue {
     height:136px;
-    background-color: $color-blue;
+    background-color: #3c92fa;
     font-size: 28px;
     flex-direction: column;
-    border: 3px solid $color-blue;
     span {
       font-size: 40px;
     }
     &.--active, &:hover {
-      border-color: #3892ff;
+      background-color: $color-blue;
     }
   }
   
   .--yellow {
-    background-color: $color-yellow;
+    background-color: #ffc56c;
     margin-bottom: 8px;
-    border: 3px solid $color-yellow;
     &.--active, &:hover{
-      border-color: #b87000;
+      background-color: $color-yellow;
     }
   }
 
   .--red {
-    background-color: $color-error;
-    border: 3px solid $color-error;
+    background-color: #ff7f7b;
     &.--active, &:hover {
-      border-color: #b91813;
+      background-color: $color-error;
     }
   }
 }

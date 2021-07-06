@@ -5,10 +5,13 @@ import { Container, Grid } from '@material-ui/core';
 import Header from 'shared/Header';
 import './styles.scss';
 import { Assignment } from 'types/assignment';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router';
 import Button from 'components/Button';
 import useFetch from 'services/useFetch';
+import { IAuthState } from 'providers/Auth/reducer';
+import { AuthDataContext } from 'providers/Auth/provider';
+import { ROLE } from 'types/global';
 
 
 type QueryProps = {
@@ -19,6 +22,7 @@ type QueryProps = {
 const Information = (): JSX.Element => {
 
   const history = useHistory();
+  const { role } = useContext<IAuthState>(AuthDataContext);
   const { params } = useRouteMatch<QueryProps>();
   const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
   const [assignment, setAssignment] = useState<Assignment | any>({});
@@ -50,8 +54,7 @@ const Information = (): JSX.Element => {
       setIsLocalData(true);
       getDataStorage();
     }
-  }, [params])
-  
+  }, [params]);
 
   return (
   <>
@@ -112,16 +115,29 @@ const Information = (): JSX.Element => {
             >
               <FontAwesomeIcon icon={faTimes} color="#FFFFFF" />
             </Button>
-            <Button 
-              className="btn --outline-info"
-              onClick={() => {
-                isLocalData ? history.push('/programaciones/programacion/' + params.index):
-                history.push('/historial/programacion/' + params.id) 
-              }}
-            >
-              <span>EJECUTAR</span>{" "}
-              <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
-            </Button>
+            { role === ROLE.operator ? 
+              <Button 
+                className="btn --outline-info"
+                onClick={() => {
+                  isLocalData ? history.push('/programaciones/programacion/' + params.index):
+                  history.push('/historial/programacion/' + params.id) 
+                }}
+              >
+                <span>EJECUTAR</span>{" "}
+                <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
+              </Button>
+              :
+              <Button 
+                className="btn --outline-info"
+                onClick={() => {
+                  history.push('/programaciones/reprogramacion/' + params.index) 
+                }}
+              >
+                <span>REPROGRAMAR</span>{" "}
+                <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
+              </Button>
+            
+            }
           </div>
         }
       </Container>

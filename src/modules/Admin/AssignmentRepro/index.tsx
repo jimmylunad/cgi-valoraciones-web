@@ -10,7 +10,7 @@ import './styles.scss';
 import { FormLabel } from "components/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useFetch from "services/useFetch";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { Alert } from "@material-ui/lab";
 
 moment.locale('es');
@@ -18,6 +18,7 @@ moment.locale('es');
 const AssignmentRepro = (): JSX.Element => {
 
   const params = useParams<{ id: string }>();
+  const history = useHistory();
   const [date, setDate] = useState<any>(moment())
   const [focused, setFocused] = useState<boolean>(false); 
   const [responseServer, setResponseServer] = useState<{
@@ -44,6 +45,12 @@ const AssignmentRepro = (): JSX.Element => {
       severity: response.success ? 'success' : 'error',
       message: response.message
     });
+
+    if (response.success) {
+      setTimeout(() => {
+        history.push('/');
+      }, 4000);
+    }
   }, []);
 
   return (
