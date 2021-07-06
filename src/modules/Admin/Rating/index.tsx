@@ -177,7 +177,7 @@ const Rating = (): JSX.Element => {
         isLocalData ? '/programaciones/informacion/' + params.index:
         '/historial/informacion/' + params.id
       } 
-      title={"Programación " + assignment.code} 
+      title={"Programación " + (assignment.code || '')} 
     />
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="tab__wrapper">

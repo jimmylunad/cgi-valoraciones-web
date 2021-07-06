@@ -23,7 +23,7 @@ const ROUTES_OPERATOR: RoutePage[] = [
 ];
 
 const ROUTES_SUPERVISOR: RoutePage[] = [
-  { path: '/programaciones/informacion/:index', component: Information },
+  { path: '/programaciones/informacion/:id', component: Information },
   { path: '/programaciones/motivo/:id', component: Rating },
   { path: '/programaciones/reprogramacion/:id', component: AssignmentRepro },
   { path: '/programaciones/nueva', component: AssignmentNew },

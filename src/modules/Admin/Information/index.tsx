@@ -24,8 +24,8 @@ const Information = (): JSX.Element => {
   const history = useHistory();
   const { role } = useContext<IAuthState>(AuthDataContext);
   const { params } = useRouteMatch<QueryProps>();
-  const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
-  const [assignment, setAssignment] = useState<Assignment | any>({});
+  const [ isLocalData, setIsLocalData ] = useState<boolean | null>(null);
+  const [ assignment, setAssignment ] = useState<Assignment | any>({});
   
   const { fetch, loading } = useFetch({
     loading: false,
@@ -61,8 +61,9 @@ const Information = (): JSX.Element => {
     <Header 
       link={ isLocalData ?  "/programaciones" : "/historial"} 
       loading={loading} 
-      title={"Programación " + assignment.code } 
+      title={"Programación " + (assignment.code) } 
     />
+    
     <div className="tab__wrapper">
       <Container maxWidth="md" className="tab__container">
         <Grid container className="summary" alignItems="center">
@@ -104,39 +105,49 @@ const Information = (): JSX.Element => {
           </Grid>
         </Grid>
         {
-          assignment.availableOptions && 
+          (assignment.availableOptions || role === ROLE.supervisor) && 
           <div className="actions">
-            <Button
-              className="btn --reject"
-              onClick={() => {
-                isLocalData ? history.push('/programaciones/motivo/' + params.index):
-                history.push('/historial/programacion/' + params.id) 
-              }}
-            >
-              <FontAwesomeIcon icon={faTimes} color="#FFFFFF" />
-            </Button>
-            { role === ROLE.operator ? 
-              <Button 
-                className="btn --outline-info"
-                onClick={() => {
-                  isLocalData ? history.push('/programaciones/programacion/' + params.index):
-                  history.push('/historial/programacion/' + params.id) 
-                }}
-              >
-                <span>EJECUTAR</span>{" "}
-                <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
-              </Button>
-              :
-              <Button 
-                className="btn --outline-info"
-                onClick={() => {
-                  history.push('/programaciones/reprogramacion/' + params.index) 
-                }}
-              >
-                <span>REPROGRAMAR</span>{" "}
-                <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
-              </Button>
             
+            { role === ROLE.operator ? 
+              <>
+                <Button
+                  className="btn --reject"
+                  onClick={() => {
+                    isLocalData ? history.push('/programaciones/motivo/' + params.index):
+                    history.push('/historial/programacion/' + params.id) 
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTimes} color="#FFFFFF" />
+                </Button>
+                <Button 
+                  className="btn --outline-info"
+                  onClick={() => {
+                    isLocalData ? history.push('/programaciones/programacion/' + params.index):
+                    history.push('/historial/programacion/' + params.id) 
+                  }}
+                >
+                  <span>EJECUTAR</span>{" "}
+                  <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
+                </Button>
+              </>
+              :
+              <>
+                <Button
+                  className="btn --reject"
+                  onClick={() => { history.push('/programaciones/motivo/' + params.id)}}
+                >
+                  <FontAwesomeIcon icon={faTimes} color="#FFFFFF" />
+                </Button>
+                <Button 
+                  className="btn --outline-info"
+                  onClick={() => {
+                    history.push('/programaciones/reprogramacion/' + params.id) 
+                  }}
+                >
+                  <span>REPROGRAMAR</span>{" "}
+                  <FontAwesomeIcon icon={faChevronCircleRight} color="#205390" />
+                </Button>
+              </>
             }
           </div>
         }

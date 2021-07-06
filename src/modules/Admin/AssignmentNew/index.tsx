@@ -11,7 +11,22 @@ import "./styles.scss";
 import Footer from "shared/Footer";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router";
-import { Alert } from "@material-ui/lab";
+import { Alert, Skeleton } from "@material-ui/lab";
+
+const Loading = ():JSX.Element => (
+  <>
+    <br></br>
+    {
+      Array(3).fill(2).map(() => (
+        <>
+          <Skeleton></Skeleton>
+          <Skeleton height={38}></Skeleton>
+          <br></br>
+        </>
+      ))
+    }
+  </>
+);
 
 const AssignmentNew = (): JSX.Element => {
 
@@ -138,7 +153,7 @@ const AssignmentNew = (): JSX.Element => {
               <Grid item xs={12}>
                 
               {
-                !loading && options &&
+                !loading && options ?
                 <>
                   <Option
                     label="Fecha"
@@ -190,7 +205,8 @@ const AssignmentNew = (): JSX.Element => {
                     control={control} 
                     errors={errors} 
                   />
-                </> 
+                </> : 
+                <Loading />
               }
               </Grid>
               <br></br>

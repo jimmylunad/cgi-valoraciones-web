@@ -1,6 +1,6 @@
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { Container, Grid } from "@material-ui/core";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SingleDatePicker } from 'react-dates';
 import Footer from "shared/Footer";
 import Header from "shared/Header";
@@ -10,6 +10,7 @@ import { FormLabel } from "components/Form";
 import useFetch from "services/useFetch";
 import { useHistory, useParams } from "react-router";
 import { Alert } from "@material-ui/lab";
+import { Assignment } from "types/assignment";
 
 moment.locale('es');
 
@@ -19,6 +20,7 @@ const AssignmentRepro = (): JSX.Element => {
   const history = useHistory();
   const [date, setDate] = useState<any>(moment())
   const [focused, setFocused] = useState<boolean>(false); 
+  const [assignment, setAssignment] = useState<Assignment | any>({});
   const [responseServer, setResponseServer] = useState<{
     severity: "success" | "error",
     message: string,
@@ -30,6 +32,21 @@ const AssignmentRepro = (): JSX.Element => {
       method: 'POST',
     }
   })
+
+  const { fetch:fetchDetail } = useFetch({
+    loading: false,
+    config: {
+      url: '/v1/app/assignment/detail/' + params.id,
+    }
+  })
+
+  const getData = async () => {
+    const response = await fetchDetail({}); 
+    if (response.success) {
+      setAssignment(response.data);
+    }
+  };
+
 
   const onSubmit = useCallback(async (event) => {
     event.preventDefault();
@@ -51,9 +68,16 @@ const AssignmentRepro = (): JSX.Element => {
     }
   }, [date, fetch, history, params.id]);
 
+  useEffect(() => {
+    getData();
+  },[])
+
   return (
     <>
-      <Header link={'/programaciones/informacion/' + params.id} title="Programación" />
+      <Header 
+        link={'/programaciones/informacion/' + params.id} 
+        title={`Programación ` + (assignment.code || '')} 
+      />
       <form onSubmit={onSubmit} >
         <div className="tab__wrapper">
           <Container maxWidth="md" className="tab__container">

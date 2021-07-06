@@ -22,7 +22,7 @@ const Header = ({ link, title, loading }: HeaderProps) => {
             <div className="navbar__back">
               <FontAwesomeIcon 
                 icon={faChevronCircleLeft} 
-                color="#FFFFFF" onClick={() => { history.push(link)}} 
+                color="#FFFFFF" onClick={() => { history.goBack()}} 
               />
             </div>
             <div className="navbar__title">
