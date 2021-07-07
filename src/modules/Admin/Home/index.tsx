@@ -13,6 +13,8 @@ import { ROLE } from 'types/global';
 import { AuthDataContext } from 'providers/Auth/provider';
 import { IAuthState } from 'providers/Auth/reducer';
 import { Offline } from "react-detect-offline";
+import Dexie from 'dexie'
+// import { useLiveQuery } from "dexie-react-hooks";
 
 const Loading = (): JSX.Element => (
   <li className="list__option">
@@ -43,6 +45,16 @@ type OptionsMenuRole = {
 }
 
 const Home = ():JSX.Element => {
+  const db = new Dexie('igcAssignment');
+  db.version(1).stores({
+    assignments:"id, addresName, availableOptions, code, contractor, dateAttended, detail.addresName, detail.code, detail.contractor, management, routeName, scheduledDate, status"
+  });
+
+  db.open().catch((err) => {
+    console.log(err.stack || err);
+  });
+
+
   const history = useHistory();
   const { plate, role } = useContext<IAuthState>(AuthDataContext);
   const [isCounter, setCounter] = useState<boolean | null>(null);
@@ -91,7 +103,8 @@ const Home = ():JSX.Element => {
     const response = await fetch({}); 
     if (response.success) {
       localStorage.setItem('assignments', JSON.stringify(response.data));
-    }
+      response.data.forEach(async (element: any) => await db.table("assignments").put(element));
+    };
 
     const responseCombo = await fetchCombo({});
     if (responseCombo.success) {
