@@ -8,9 +8,12 @@ import Header from 'shared/Header';
 import Tabs from 'shared/Tabs';
 import './styles.scss';
 import { Assignment } from 'types/assignment';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import useFetch from 'services/useFetch';
 import { useHistory } from 'react-router';
+import { DBDataContext } from 'providers/DB/provider';
+import { IDBState } from 'providers/DB/reducer';
+import { FormLabel } from 'components/Form';
 
 const Loading = (): JSX.Element => (
   <li className="card">
@@ -30,6 +33,7 @@ const Loading = (): JSX.Element => (
 const Historial = (): JSX.Element => {
 
   const history = useHistory();
+  const { online } = useContext<IDBState>(DBDataContext);
   const OPTIONS_TABS: TabOption[] = [
     {title: 'INICIO', link: '/programaciones'},
     {title: 'HISTORIAL', link: '/historial'},
@@ -38,7 +42,7 @@ const Historial = (): JSX.Element => {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
 
   const { fetch, loading } = useFetch({
-    loading: true,
+    loading: online,
     config: {
       url: '/v1/app/assignment?type=2',
     }
@@ -52,8 +56,8 @@ const Historial = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    getData();
-  }, [getData])
+    if (online) getData();
+  }, [getData, online])
 
   return (
   <>
@@ -65,43 +69,49 @@ const Historial = (): JSX.Element => {
           <h5>Historial de asignaciones</h5>
         </div>
         <div className="tab__list">
-          {
-            !loading && assignments.length === 0 && 
-            <p className="tab__empty">No existen asignaciones</p>
+          { !online ? 
+          
+            <FormLabel className="label-center">No tienes conexión, inténtalo mas tarde</FormLabel> :
+            <>
+              {
+                !loading && assignments.length === 0 && 
+                <p className="tab__empty">No existen asignaciones</p>
+              }
+              <ul>
+                {
+                !loading ? assignments.map((assignment, index) => (
+                  <li 
+                    className="card"
+                    key={index *2} 
+                    onClick={() => {
+                    history.push('/historial/informacion/' + assignment.id)
+                  }}>
+                    <div className="assignment">
+                      <div className="assignment__ico">
+                        <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>
+                      </div>
+                      <div className="assignment__detail">
+                        <div className="detail__superior">
+                          <h2>{assignment.code}</h2>
+                          <h6>{assignment.scheduledDate}</h6>
+                        </div>
+                        <div className="detail__inferior">
+                          <p>{assignment.addresName}</p>
+                          <p>{assignment.routeName}</p>
+                          <p>{assignment.contractor}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                ))
+                :
+                Array(3).fill(2).map((e, index) => (
+                  <Loading key={index*2}/>
+                ))
+                }
+              </ul>
+            </>
           }
-          <ul>
-            {
-             !loading ? assignments.map((assignment, index) => (
-              <li 
-                className="card"
-                key={index *2} 
-                onClick={() => {
-                history.push('/historial/informacion/' + assignment.id)
-              }}>
-                <div className="assignment">
-                  <div className="assignment__ico">
-                    <FontAwesomeIcon icon={faClipboardList} color="#b5b4c4"></FontAwesomeIcon>
-                  </div>
-                  <div className="assignment__detail">
-                    <div className="detail__superior">
-                      <h2>{assignment.code}</h2>
-                      <h6>{assignment.scheduledDate}</h6>
-                    </div>
-                    <div className="detail__inferior">
-                      <p>{assignment.addresName}</p>
-                      <p>{assignment.routeName}</p>
-                      <p>{assignment.contractor}</p>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            ))
-            :
-            Array(3).fill(2).map((e, index) => (
-              <Loading key={index*2}/>
-            ))
-            }
-          </ul>
         </div>
       </Container>
     </div>

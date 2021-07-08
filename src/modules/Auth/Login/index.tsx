@@ -82,8 +82,8 @@ const Login = ():JSX.Element => {
               placeholder="Ingresa contraseña"
               {...register("password", { required: true })}
               />
-            <Grid item container justify="space-between">
-              <FormCheckbox>Recuérdame</FormCheckbox>
+            <Grid item container justify="center">
+              {/* <FormCheckbox>Recuérdame</FormCheckbox> */}
               <Link className="link" to="/auth/password">Olvidé mi contraseña</Link>
             </Grid>
             <br></br>
