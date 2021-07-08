@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "CGI",
+      "package_name": "pe.gpstracking.webapp.twa",
+      "sha256_cert_fingerprints": [
+        "C1:97:08:65:EC:8B:60:32:77:13:24:9F:58:89:E3:0F:DC:E6:89:E2:12:2E:FC:41:64:C6:C0:B6:E1:19:C5:EB"
+      ]
+    }
+  }
+]
