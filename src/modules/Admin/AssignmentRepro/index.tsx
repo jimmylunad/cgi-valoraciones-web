@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { Container, Grid } from "@material-ui/core";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { SingleDatePicker } from 'react-dates';
 import Footer from "shared/Footer";
 import Header from "shared/Header";
@@ -12,11 +12,14 @@ import { useHistory, useParams } from "react-router";
 import { Alert } from "@material-ui/lab";
 import { Assignment } from "types/assignment";
 import './styles.scss';
+import { IDBState } from "providers/DB/reducer";
+import { DBDataContext } from "providers/DB/provider";
 
 moment.locale('es');
 
 const AssignmentRepro = (): JSX.Element => {
 
+  const { db, online } = useContext<IDBState>(DBDataContext);
   const params = useParams<{ id: string }>();
   const history = useHistory();
   const [date, setDate] = useState<any>(moment())
@@ -48,29 +51,54 @@ const AssignmentRepro = (): JSX.Element => {
     }
   };
 
+  const getDataStorage = async () => {
+    const assignment: Assignment = await db.table('assignments').get(Number(params.id)); 
+    setAssignment(assignment)
+  }
+
 
   const onSubmit = useCallback(async (event) => {
     event.preventDefault();
-    const response = await fetch({
-      data: {
-        id_programming_address: params.id,
-	      scheduled_date: date.format('YYYY-MM-DD')
-      }
-    })
-    setResponseServer({
-      severity: response.success ? 'success' : 'error',
-      message: response.message
-    });
+    if (online) {
 
-    if (response.success) {
+      const response = await fetch({
+        data: {
+          id_programming_address: params.id,
+          scheduled_date: date.format('YYYY-MM-DD')
+        }
+      })
+      setResponseServer({
+        severity: response.success ? 'success' : 'error',
+        message: response.message
+      });
+      
+      if (response.success) {
+        setTimeout(() => {
+          history.push('/');
+        }, 4000);
+      }
+    } else {
+      db.table("reprogramming").add({
+        id_programming_address: params.id,
+        scheduled_date: date.format('YYYY-MM-DD')
+      });
+
+      setResponseServer({
+        severity: 'success',
+        message: 'Se guardó exitosamente en base datos local',
+      });
       setTimeout(() => {
         history.push('/');
-      }, 4000);
+      }, 4000);  
     }
   }, [date, fetch, history, params.id]);
 
   useEffect(() => {
-    getData();
+    if (online) {
+      getData();
+    } else {
+      getDataStorage();
+    }
   },[])
 
   return (

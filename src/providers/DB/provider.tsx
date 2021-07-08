@@ -16,6 +16,7 @@ const DBProvider: React.FC<ProvideProps> = ({ children }: ProvideProps) => {
   db.version(1).stores({
     assignments:"id, addresName, availableOptions, code, contractor, dateAttended, detail.addresName, detail.code, detail.contractor, management, routeName, scheduledDate, status",
     rating: "++id, id_assignment, id_option, observation, latitud, longitud, datetime, file",
+    reprogramming: "++id, id_programming_address, scheduled_date", 
   });
 
   const initialState: IDBState = {

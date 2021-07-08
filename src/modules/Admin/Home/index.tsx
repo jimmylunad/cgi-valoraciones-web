@@ -51,6 +51,8 @@ const Home = ():JSX.Element => {
   const { plate, role } = useContext<IAuthState>(AuthDataContext);
   const [isCounter, setCounter] = useState<number>(0);
   const [isRating, setRating] = useState<number>(0);
+  const [isReprogramming, setReprogramming] = useState<number>(0);
+
   const MENU: OptionsMenuRole = {
     [`${ROLE.operator}`]: [
       { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
@@ -68,6 +70,13 @@ const Home = ():JSX.Element => {
     config: {
       url: '/v1/app/assignment',
       method: 'POST'
+    }
+  });
+
+  const { fetch: submitReprogramming , loading: loadingReprogramming } = useFetch({
+    config: {
+      url: '/v1/app/supervisor/assignment/reschedule',
+      method: 'POST',
     }
   })
 
@@ -100,7 +109,7 @@ const Home = ():JSX.Element => {
       }
     }); 
 
-    
+
     if (response.success) {
       localStorage.setItem('assignments', JSON.stringify(response.data));
       response.data.forEach(async (element: any) => await db.table("assignments").put(element));
@@ -125,6 +134,12 @@ const Home = ():JSX.Element => {
   const getCountRating = useCallback(async () => {
     const countRating = await db.table("rating").count();
     setRating(countRating);
+  }, []);
+
+
+  const getCountReprogramming = useCallback(async () => {
+    const countRating = await db.table("reprogramming").count();
+    setReprogramming(countRating);
   }, []);
 
 
@@ -175,10 +190,39 @@ const Home = ():JSX.Element => {
     processData(0);
   }, [db]);
 
+  const asyncDataReprograming = useCallback(async() => {
+    const data: any[] = await db.table("reprogramming").toArray();
+
+    const processData = async (index: number) => {
+      if (index === data.length) {
+        getCountReprogramming();
+        return;
+      }
+
+      const { file, id_assignment,  ...rest } = data[index];
+
+      setTimeout(async () => {
+      
+        const response = await submitReprogramming({
+          data: data[index]
+        });
+
+        if (response.success) db.table('reprogramming').delete(parseInt(rest.id));
+
+        
+        return processData(index + 1);
+
+      }, index === 0 ? 0 : 1000);
+    }
+
+    processData(0);
+  },[]);
+
   useEffect(() => {
     if (online) getData();
     getCountAssigments();
-    getCountRating();    
+    getCountRating(); 
+    getCountReprogramming();   
   }, []);
 
   return (
@@ -239,17 +283,18 @@ const Home = ():JSX.Element => {
                 ))
               }
               {
-                online && isRating > 0 &&
+                online && (isRating > 0 || isReprogramming > 0) &&
                 <li
                   className="menu__option"
                   onClick={() => {
                     asyncData();
+                    asyncDataReprograming();
                   }}
                 >
                   <Grid container alignItems="center" > 
                     <Grid item className="menu__icon" style={{background: '#ad24ad'}}> 
                     {
-                      loadingPost ? 
+                      (loadingPost || loadingReprogramming) ? 
                       <FontAwesomeIcon icon={faSpinner} spin color={"#FFFFFF"}/> :
                       <FontAwesomeIcon icon={faSync} color="#FFFFFF"></FontAwesomeIcon>               
                     }

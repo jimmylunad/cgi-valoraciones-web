@@ -152,13 +152,11 @@ const Rating = (): JSX.Element => {
     } else {
 
       let files:any = [];
-      console.log("images", images);
 
       images.forEach(image => {
         const reader = new FileReader();
         reader.readAsDataURL(image.file);
         reader.onload= (e) => {
-          console.log("reader.result", reader.result);
           files.push(reader.result);
         }
       });

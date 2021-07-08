@@ -24,7 +24,7 @@ type QueryProps = {
 const Information = (): JSX.Element => {
 
   const history = useHistory();
-  const { db } = useContext<IDBState>(DBDataContext)
+  const { db, online } = useContext<IDBState>(DBDataContext)
   const { role } = useContext<IAuthState>(AuthDataContext);
   const { params } = useRouteMatch<QueryProps>();
   const [ isLocalData, setIsLocalData ] = useState<boolean | null>(null);
@@ -45,12 +45,12 @@ const Information = (): JSX.Element => {
   };
 
   const getDataStorage = async () => {
-    const assignment: Assignment = await db.table('assignments').get(Number(params.index)); 
+    const assignment: Assignment = await db.table('assignments').get(Number(params.index || params.id)); 
     setAssignment(assignment)
   }
 
   useEffect(() => {
-    if (params.id) {
+    if (params.id && online) {
       setIsLocalData(false);
       getData();
     } else {
