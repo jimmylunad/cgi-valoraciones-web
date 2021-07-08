@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faBookmark, faSignOutAlt, IconDefinition, faUser, faBell, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faSignOutAlt, IconDefinition, faUser, faBell, faSpinner, faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useState } from 'react';
 import { Container, Grid } from '@material-ui/core';
@@ -74,7 +74,7 @@ const Home = ():JSX.Element => {
   const { fetch, loading:loadingAssignment } = useFetch({
     loading: online,
     config: {
-      url: '/v1/app/assignment?type=1',
+      url: '/v1/app/assignment',
     }
   })
 
@@ -93,7 +93,14 @@ const Home = ():JSX.Element => {
   });
 
   const getData = useCallback(async () => {
-    const response = await fetch({}); 
+    const response = await fetch({
+      params: {
+        ...ROLE.supervisor === role ? { show: 'scheduled'} : {},
+        type: 1,
+      }
+    }); 
+
+    
     if (response.success) {
       localStorage.setItem('assignments', JSON.stringify(response.data));
       response.data.forEach(async (element: any) => await db.table("assignments").put(element));
@@ -131,7 +138,6 @@ const Home = ():JSX.Element => {
       }
 
       const { file, id_assignment,  ...rest } = data[index];
-
 
       setTimeout(async () => {
         
@@ -244,7 +250,7 @@ const Home = ():JSX.Element => {
                     {
                       loadingPost ? 
                       <FontAwesomeIcon icon={faSpinner} spin color={"#FFFFFF"}/> :
-                      <FontAwesomeIcon icon={faSignOutAlt} color="#FFFFFF"></FontAwesomeIcon>               
+                      <FontAwesomeIcon icon={faSync} color="#FFFFFF"></FontAwesomeIcon>               
                     }
                     </Grid>
                     <Grid item xs={8}>
