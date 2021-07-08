@@ -73,7 +73,7 @@ const OperatorAssignments = (): JSX.Element => {
       })
     // const assignments: any = localStorage.getItem("assignments");
     // setAssignments(JSON.parse(assignments));
-  }, [])
+  }, [db.assignments])
 
   return (
   <>
