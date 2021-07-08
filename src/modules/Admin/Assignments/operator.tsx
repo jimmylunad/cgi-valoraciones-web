@@ -4,13 +4,14 @@ import { Container, Grid } from '@material-ui/core';
 import { TabOption } from 'shared/Tabs';
 import Header from 'shared/Header';
 import Tabs from 'shared/Tabs';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Assignment } from 'types/assignment';
 import { useHistory } from 'react-router';
 import { FormLabel, FormSelect } from 'components/Form';
 import useFetch from 'services/useFetch';
 import './styles.scss';
 import { Skeleton } from '@material-ui/lab';
+import { DBDataContext } from 'providers/DB/provider';
 
 
 const Loading = (): JSX.Element => (
@@ -31,6 +32,7 @@ const Loading = (): JSX.Element => (
 const OperatorAssignments = (): JSX.Element => {
 
   const history = useHistory();
+  const db = useContext<any>(DBDataContext);
   const [assignments, setAssignments] = useState<Assignment[] | any>([]);
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const OPTIONS_TABS: TabOption[] = [
@@ -66,8 +68,11 @@ const OperatorAssignments = (): JSX.Element => {
   }
 
   useEffect(() => {
-    const assignments: any = localStorage.getItem("assignments");
-    setAssignments(JSON.parse(assignments));
+      db.assignments.toArray((data:Assignment[]) => {
+        setAssignments(data);
+      })
+    // const assignments: any = localStorage.getItem("assignments");
+    // setAssignments(JSON.parse(assignments));
   }, [])
 
   return (
