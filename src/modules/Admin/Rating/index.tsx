@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Grid } from '@material-ui/core';
 import Header from 'shared/Header';
 import { Assignment } from 'types/assignment';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouteMatch, useHistory } from 'react-router';
 import { FormLabel, FormSelect, FormTextarea  } from 'components/Form';
 import Footer from 'shared/Footer';
@@ -14,6 +14,7 @@ import useFetch from 'services/useFetch';
 import { Alert } from '@material-ui/lab';
 import Button from 'components/Button';
 import Summary from './Summary';
+import { DBDataContext } from 'providers/DB/provider';
 
 type QueryProps = {
   id:string; // Consultar data
@@ -22,6 +23,7 @@ type QueryProps = {
 
 const Rating = (): JSX.Element => {
 
+  const db = useContext<any>(DBDataContext);
   const history = useHistory<any>();
   const { params } = useRouteMatch<QueryProps>();
   const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
@@ -113,7 +115,7 @@ const Rating = (): JSX.Element => {
   }
 
   const onSubmit = useCallback(async (data:any) => {
-    if (!loadingPost) {
+    if (!loadingPost && !isLocalData) {
       const bodyFormData = new FormData();
       bodyFormData.set('id', data.id);
       bodyFormData.set('id_option', data.id_option.value);
@@ -140,6 +142,43 @@ const Rating = (): JSX.Element => {
         reset();
         history.push('/');
       }, 4000);   
+    } else {
+
+      let files:any = [];
+      console.log("images", images);
+
+      images.forEach(image => {
+        const reader = new FileReader();
+        reader.readAsDataURL(image.file);
+        reader.onload= (e) => {
+          console.log("reader.result", reader.result);
+          files.push(reader.result);
+        }
+      });
+
+      setTimeout(() => {
+        db.table("rating").add({
+          id_assignment: data.id,
+          id_option: data.id_option.value,
+          observation: data.observation,
+          latitud: data.latitud,
+          longitud: data.longitud,
+          file: files  
+        });
+
+        db.table('assignments')
+        .delete(data.id).then(() => {
+          setResponseServer({
+            severity: 'success',
+            message: 'Se guardó exitosamente en base datos local',
+          });
+          setTimeout(() => {
+            reset();
+            history.push('/');
+          }, 4000);  
+        });
+
+      }, 100);
     }
   }, [submitPost]);
 
