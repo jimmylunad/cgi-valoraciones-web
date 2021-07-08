@@ -52,6 +52,9 @@
   font-family: $font-medium;
   color: #888888;
   line-height: 30px;
+  &.--error {
+    color: $color-error;
+  }
 }
 
 .form-select {

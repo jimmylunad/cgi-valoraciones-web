@@ -27,11 +27,12 @@ export const FormCheckbox = ({children, ...props }:FormCheckboxProps) => (
 );
 
 type FormLabelProps = {
-  children: string;
+  children?: string;
+  className?: string;
 }
 
 
-export const FormLabel = ({children}: FormLabelProps) => <label className="form-label">{children}</label>
+export const FormLabel = ({children, className, ...props}: FormLabelProps) => <label className={"form-label " + className} {...props} >{children}</label>
 
 export const FormSelect =  React.forwardRef((props: any, ref) => (<Select isSearchable={false} ref={ref} {...props} />)); 
 
