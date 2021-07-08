@@ -58,7 +58,7 @@ const Login = ():JSX.Element => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Container maxWidth="md" className="container">
         <Grid container direction="column" alignItems="center">
-          <img className="logo" src={logo} alt="logo" width="190px" height="91px" />
+          <img className="logo" src={logo} alt="logo" width="190px" height="81px" />
           <h6 className="title">Iniciar sesión</h6>
           <span className="text">Ingresa tus credenciales</span>
           {errorServer && 
