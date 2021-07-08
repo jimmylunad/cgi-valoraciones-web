@@ -199,7 +199,7 @@ const Home = ():JSX.Element => {
         return;
       }
 
-      const { file, id_assignment,  ...rest } = data[index];
+      const { fid_assignment,  ...rest } = data[index];
 
       setTimeout(async () => {
       

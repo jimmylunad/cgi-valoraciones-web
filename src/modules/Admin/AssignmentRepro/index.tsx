@@ -80,7 +80,8 @@ const AssignmentRepro = (): JSX.Element => {
     } else {
       db.table("reprogramming").add({
         id_programming_address: params.id,
-        scheduled_date: date.format('YYYY-MM-DD')
+        scheduled_date: date.format('YYYY-MM-DD'),
+        datetime: moment().format('YYYY-MM-DD HH:mm'),
       });
 
       setResponseServer({
