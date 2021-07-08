@@ -97,7 +97,6 @@ const Home = ():JSX.Element => {
     if (response.success) {
       localStorage.setItem('assignments', JSON.stringify(response.data));
       response.data.forEach(async (element: any) => await db.table("assignments").put(element));
-      setCounter(response.data.length);
     };
 
     const responseCombo = await fetchCombo({});
@@ -111,8 +110,15 @@ const Home = ():JSX.Element => {
     }
   }, []);
 
+  const getCountAssigments = useCallback(async () => {
+    const countAssignments = await db.table("assignments").count();
+    setCounter(countAssignments);
+  }, []);
+
+
   useEffect(() => {
     getData();
+    getCountAssigments();
   }, [getData])
 
   return (
@@ -175,7 +181,7 @@ const Home = ():JSX.Element => {
               ))
             }
             {
-              online &&
+              online && 
               <li
                 className="menu__option"
                 onClick={() => {
