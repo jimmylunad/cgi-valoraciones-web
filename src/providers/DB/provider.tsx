@@ -15,7 +15,7 @@ const DBProvider: React.FC<ProvideProps> = ({ children }: ProvideProps) => {
   const db = new Dexie('igcAssignment');
   db.version(1).stores({
     assignments:"id, addresName, availableOptions, code, contractor, dateAttended, detail.addresName, detail.code, detail.contractor, management, routeName, scheduledDate, status",
-    rating: "++id, id_assignment, id_option, observation, latitud, longitud, file",
+    rating: "++id, id_assignment, id_option, observation, latitud, longitud, datetime, file",
   });
 
   const initialState: IDBState = {

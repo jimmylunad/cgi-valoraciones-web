@@ -146,6 +146,7 @@ const Home = ():JSX.Element => {
         bodyFormData.set('id_option', rest.id_option);
         bodyFormData.set('observation', rest.observation);
         bodyFormData.set('latitud', rest.latitud);
+        bodyFormData.set('datetime', rest.datetime);
         bodyFormData.set('longitud', rest.longitud);
 
         file.forEach((currentFile: any, index: number) => {

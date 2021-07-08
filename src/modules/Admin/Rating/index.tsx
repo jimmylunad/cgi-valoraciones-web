@@ -16,6 +16,9 @@ import Button from 'components/Button';
 import Summary from './Summary';
 import { DBDataContext } from 'providers/DB/provider';
 import { IDBState } from 'providers/DB/reducer';
+import moment from "moment";
+
+moment.locale('es');
 
 type QueryProps = {
   id:string; // Consultar data
@@ -169,7 +172,8 @@ const Rating = (): JSX.Element => {
           observation: data.observation,
           latitud: data.latitud,
           longitud: data.longitud,
-          file: files  
+          datetime: moment().format('YYYY-MM-DD HH:mm'),
+          file: files 
         });
 
         setResponseServer({
