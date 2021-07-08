@@ -15,6 +15,7 @@ import { Alert } from '@material-ui/lab';
 import Button from 'components/Button';
 import Summary from './Summary';
 import { DBDataContext } from 'providers/DB/provider';
+import { IDBState } from 'providers/DB/reducer';
 
 type QueryProps = {
   id:string; // Consultar data
@@ -23,7 +24,7 @@ type QueryProps = {
 
 const Rating = (): JSX.Element => {
 
-  const db = useContext<any>(DBDataContext);
+  const { db, online } = useContext<IDBState>(DBDataContext);
   const history = useHistory<any>();
   const { params } = useRouteMatch<QueryProps>();
   const [isLocalData, setIsLocalData] = useState<boolean | null>(null);
@@ -115,7 +116,7 @@ const Rating = (): JSX.Element => {
   }
 
   const onSubmit = useCallback(async (data:any) => {
-    if (!loadingPost && !isLocalData) {
+    if (!loadingPost && online) {
       const bodyFormData = new FormData();
       bodyFormData.set('id', data.id);
       bodyFormData.set('id_option', data.id_option.value);
@@ -138,10 +139,13 @@ const Rating = (): JSX.Element => {
         severity: response.success ? 'success' : 'error',
         message: response.message
       });
-      setTimeout(() => {
-        reset();
-        history.push('/');
-      }, 4000);   
+
+      if (response.success) {
+        setTimeout(() => {
+          reset();
+          history.push('/');
+        }, 4000);   
+      }
     } else {
 
       let files:any = [];

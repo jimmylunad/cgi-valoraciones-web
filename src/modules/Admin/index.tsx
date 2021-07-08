@@ -1,5 +1,6 @@
 import { AuthDataContext } from 'providers/Auth/provider';
 import { IAuthState } from 'providers/Auth/reducer';
+import useDBActions from 'providers/DB/actions';
 import { useContext, useEffect, useState } from 'react';
 import { Switch } from 'react-router';
 import ListenerProvider from 'shared/ListenerProvider';
@@ -11,9 +12,31 @@ const AdminModule: React.FC<{}> = () => {
   const { role } = useContext<IAuthState>(AuthDataContext); 
   const [activeRoutes, setActiveRoutes] = useState<RoutePage[] | null>(null);
 
+  const { setOnline } = useDBActions();
+
   useEffect(() => {
     setActiveRoutes(routes[role]);
   }, [role]);
+
+  useEffect(() => {
+    window.addEventListener('offline', () => {
+      setOnline(false)
+    });
+
+    return () => window.removeEventListener("offline", () => {
+      setOnline(false);
+    })
+  },[setOnline])
+
+  useEffect(() => {
+    window.addEventListener('online', () => {
+      setOnline(true)
+    });
+
+    return () => window.removeEventListener("online", () => {
+      setOnline(true);
+    })
+  },[setOnline]);
 
   return (
     activeRoutes &&

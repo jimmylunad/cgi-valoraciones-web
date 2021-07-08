@@ -12,8 +12,8 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { ROLE } from 'types/global';
 import { AuthDataContext } from 'providers/Auth/provider';
 import { IAuthState } from 'providers/Auth/reducer';
-import { Offline } from "react-detect-offline";
 import { DBDataContext } from 'providers/DB/provider';
+import { IDBState } from 'providers/DB/reducer';
 // import { useLiveQuery } from "dexie-react-hooks";
 
 const Loading = (): JSX.Element => (
@@ -46,7 +46,7 @@ type OptionsMenuRole = {
 
 const Home = ():JSX.Element => {
 
-  const db = useContext<any>(DBDataContext);
+  const { db, online } = useContext<IDBState>(DBDataContext);
 
   const history = useHistory();
   const { plate, role } = useContext<IAuthState>(AuthDataContext);
@@ -63,6 +63,13 @@ const Home = ():JSX.Element => {
       { title: 'Cerrar sesión', link: '/logout', icon: faSignOutAlt, bg: '#eee4ff', color: '#8851fc' },
     ], 
   }
+
+  // const { fetch:submitPost, loading:loadingPost } = useFetch({
+  //   config: {
+  //     url: '/v1/app/assignment',
+  //     method: 'POST'
+  //   }
+  // })
 
   const { fetch, loading:loadingAssignment } = useFetch({
     loading: true,
@@ -83,30 +90,19 @@ const Home = ():JSX.Element => {
     config: {
       url: '/v1/app/assignment/schedule',
     }
-  })
-
-  const { fetch: fetchCounter } = useFetch({
-    loading: true,
-    config: {
-      url: '/v1/app/assignment/counter'
-    }
-  })
+  });
 
   const getData = useCallback(async () => {
     const response = await fetch({}); 
     if (response.success) {
       localStorage.setItem('assignments', JSON.stringify(response.data));
       response.data.forEach(async (element: any) => await db.table("assignments").put(element));
+      setCounter(response.data.length);
     };
 
     const responseCombo = await fetchCombo({});
     if (responseCombo.success) {
       localStorage.setItem('combo', JSON.stringify(responseCombo.data));
-    }
-
-    const responseCounter = await fetchCounter({});
-    if(responseCounter.success) {
-      setCounter(responseCounter.data.pendingAssignment);
     }
 
     const responseDates = await fetchDates({});
@@ -146,7 +142,7 @@ const Home = ():JSX.Element => {
               <h2>{plate}</h2>
             </div>
             {
-            !loadingAssignment && !loadingCombo ?
+            !loadingAssignment && !loadingCombo && !loadingDates ?
               <p>Tienes {isCounter} programaciones pendientes</p> :
               <Skeleton height={20} width={180} />
             }
@@ -178,7 +174,8 @@ const Home = ():JSX.Element => {
                 <Loading key={index*2}/>
               ))
             }
-            <Offline>
+            {
+              online &&
               <li
                 className="menu__option"
                 onClick={() => {
@@ -195,7 +192,7 @@ const Home = ():JSX.Element => {
                   </Grid>
                 </Grid>
               </li>
-            </Offline>
+            }
           </ul>
         </div>
       </Container>

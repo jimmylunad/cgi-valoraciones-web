@@ -12,6 +12,7 @@ import useFetch from 'services/useFetch';
 import './styles.scss';
 import { Skeleton } from '@material-ui/lab';
 import { DBDataContext } from 'providers/DB/provider';
+import { IDBState } from 'providers/DB/reducer';
 
 
 const Loading = (): JSX.Element => (
@@ -32,7 +33,7 @@ const Loading = (): JSX.Element => (
 const OperatorAssignments = (): JSX.Element => {
 
   const history = useHistory();
-  const db = useContext<any>(DBDataContext);
+  const { db } = useContext<IDBState>(DBDataContext);
   const [assignments, setAssignments] = useState<Assignment[] | any>([]);
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const OPTIONS_TABS: TabOption[] = [
