@@ -12,6 +12,8 @@ import useFetch from 'services/useFetch';
 import { IAuthState } from 'providers/Auth/reducer';
 import { AuthDataContext } from 'providers/Auth/provider';
 import { ROLE } from 'types/global';
+import { DBDataContext } from 'providers/DB/provider';
+import { IDBState } from 'providers/DB/reducer';
 
 
 type QueryProps = {
@@ -22,6 +24,7 @@ type QueryProps = {
 const Information = (): JSX.Element => {
 
   const history = useHistory();
+  const { db } = useContext<IDBState>(DBDataContext)
   const { role } = useContext<IAuthState>(AuthDataContext);
   const { params } = useRouteMatch<QueryProps>();
   const [ isLocalData, setIsLocalData ] = useState<boolean | null>(null);
@@ -41,9 +44,9 @@ const Information = (): JSX.Element => {
     }
   };
 
-  const getDataStorage = () => {
-    const assignments: any = localStorage.getItem("assignments");
-    setAssignment(JSON.parse(assignments).find((e: { id: number; }) => e.id === parseInt(params.index)))
+  const getDataStorage = async () => {
+    const assignment: Assignment = await db.table('assignments').get(Number(params.index)); 
+    setAssignment(assignment)
   }
 
   useEffect(() => {

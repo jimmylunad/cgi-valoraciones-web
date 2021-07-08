@@ -60,9 +60,9 @@ const Rating = (): JSX.Element => {
     }
   };
 
-  const getDataStorage = () => {
-    const assignments: any = localStorage.getItem("assignments");
-    setAssignment(JSON.parse(assignments).find((e: { id: number; }) => e.id === parseInt(params.index)));
+  const getDataStorage = async () => {
+    const assignment: Assignment = await db.table('assignments').get(Number(params.index)); 
+    setAssignment(assignment)
   }
 
   const { 

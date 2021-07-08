@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faBookmark, faSignOutAlt, IconDefinition, faUser, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark, faSignOutAlt, IconDefinition, faUser, faBell, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useState } from 'react';
 import { Container, Grid } from '@material-ui/core';
@@ -14,6 +14,7 @@ import { AuthDataContext } from 'providers/Auth/provider';
 import { IAuthState } from 'providers/Auth/reducer';
 import { DBDataContext } from 'providers/DB/provider';
 import { IDBState } from 'providers/DB/reducer';
+import { AnyARecord } from 'dns';
 // import { useLiveQuery } from "dexie-react-hooks";
 
 const Loading = (): JSX.Element => (
@@ -50,7 +51,8 @@ const Home = ():JSX.Element => {
 
   const history = useHistory();
   const { plate, role } = useContext<IAuthState>(AuthDataContext);
-  const [isCounter, setCounter] = useState<boolean | null>(null);
+  const [isCounter, setCounter] = useState<number>(0);
+  const [isRating, setRating] = useState<number>(0);
   const MENU: OptionsMenuRole = {
     [`${ROLE.operator}`]: [
       { title: 'Programaciones', subtitle: 'Listado', link: '/programaciones', icon: faBookmark, bg: '#fae2e4', color: '#f64e60' },
@@ -64,12 +66,12 @@ const Home = ():JSX.Element => {
     ], 
   }
 
-  // const { fetch:submitPost, loading:loadingPost } = useFetch({
-  //   config: {
-  //     url: '/v1/app/assignment',
-  //     method: 'POST'
-  //   }
-  // })
+  const { fetch:submitPost, loading:loadingPost } = useFetch({
+    config: {
+      url: '/v1/app/assignment',
+      method: 'POST'
+    }
+  })
 
   const { fetch, loading:loadingAssignment } = useFetch({
     loading: online,
@@ -115,10 +117,63 @@ const Home = ():JSX.Element => {
     setCounter(countAssignments);
   }, []);
 
+  const getCountRating = useCallback(async () => {
+    const countRating = await db.table("rating").count();
+    setRating(countRating);
+  }, []);
+
+
+  const asyncData = useCallback(async () => {
+    const data: any[] = await db.table("rating").toArray();
+
+    const processData = async (index: number) => {
+      if (index === data.length) {
+        getCountRating();
+        return;
+      }
+
+      const { file, id_assignment,  ...rest } = data[index];
+
+
+      setTimeout(async () => {
+        
+        const bodyFormData = new FormData();
+        bodyFormData.set('id', id_assignment);
+        bodyFormData.set('id_option', rest.id_option);
+        bodyFormData.set('observation', rest.observation);
+        bodyFormData.set('latitud', rest.latitud);
+        bodyFormData.set('longitud', rest.longitud);
+
+        file.forEach((currentFile: any, index: number) => {
+          const metadata = {
+            type: 'image/jpeg'
+          };
+          bodyFormData.set('file_' + index, new File([currentFile], "file_" + index+ ".jpg", metadata));
+        });
+
+
+        const response = await submitPost({
+          config: {
+            headers: { "Content-Type": "multipart/form-data" },
+          },
+          data: bodyFormData
+        });
+
+        if (response.success) db.table('rating').delete(parseInt(rest.id));
+
+        
+        return processData(index + 1);
+
+      }, index === 0 ? 0 : 1000);
+    }
+
+    processData(0);
+  }, [db]);
+
   useEffect(() => {
     if (online) getData();
-    
-    getCountAssigments();    
+    getCountAssigments();
+    getCountRating();    
   }, []);
 
   return (
@@ -179,24 +234,28 @@ const Home = ():JSX.Element => {
                 ))
               }
               {
-                  online &&
-                  <li
-                    className="menu__option"
-                    onClick={() => {
-                      console.log('estamos offline', () => 'hola');
-                    }}
-                  >
-                    <Grid container alignItems="center" > 
-                      <Grid item className="menu__icon" style={{background: '#ad24ad'}}> 
-                        <FontAwesomeIcon icon={faSignOutAlt} color="#FFFFFF"></FontAwesomeIcon>               
-                      </Grid>
-                      <Grid item xs={8}>
-                        <p>Subir datos</p>
-                        <h6>Offline</h6>
-                      </Grid>
+                online && isRating > 0 &&
+                <li
+                  className="menu__option"
+                  onClick={() => {
+                    asyncData();
+                  }}
+                >
+                  <Grid container alignItems="center" > 
+                    <Grid item className="menu__icon" style={{background: '#ad24ad'}}> 
+                    {
+                      loadingPost ? 
+                      <FontAwesomeIcon icon={faSpinner} spin color={"#FFFFFF"}/> :
+                      <FontAwesomeIcon icon={faSignOutAlt} color="#FFFFFF"></FontAwesomeIcon>               
+                    }
                     </Grid>
-                  </li>
-                }
+                    <Grid item xs={8}>
+                      <p>Subir datos</p>
+                      <h6>Offline</h6>
+                    </Grid>
+                  </Grid>
+                </li>
+              }
               </>
               :
               Array(3).fill(2).map((e, index) => (
