@@ -72,21 +72,21 @@ const Home = ():JSX.Element => {
   // })
 
   const { fetch, loading:loadingAssignment } = useFetch({
-    loading: true,
+    loading: online,
     config: {
       url: '/v1/app/assignment?type=1',
     }
   })
 
   const { fetch:fetchCombo, loading:loadingCombo } = useFetch({
-    loading: true,
+    loading: online,
     config: {
       url: '/v1/app/assignment/combo',
     }
   })
 
   const { fetch:fetchDates, loading:loadingDates } = useFetch({
-    loading: true,
+    loading: online,
     config: {
       url: '/v1/app/assignment/schedule',
     }
@@ -111,8 +111,14 @@ const Home = ():JSX.Element => {
     }
   }, []);
 
+  const getDataOffiline = useCallback(async () => {
+    console.log(db.table("assignments"))
+  }, []);
+
   useEffect(() => {
-    getData();
+    console.log("online", online);
+    if (online) getData();
+    else getDataOffiline();
   }, [getData])
 
   return (
@@ -150,48 +156,52 @@ const Home = ():JSX.Element => {
           <ul className="menu">
             {
               !loadingAssignment && !loadingCombo && !loadingDates ?
-              MENU[role].map(option => (
-                <li 
-                  className="menu__option" 
-                  key={option.link} 
-                  onClick={() => {
-                    history.push(option.link);
-                  }}
-                >
-                  <Grid container alignItems="center" > 
-                    <Grid item className="menu__icon" style={{background: option.bg}}> 
-                      <FontAwesomeIcon icon={option.icon} color={option.color}></FontAwesomeIcon>               
+              <>
+              {
+                MENU[role].map(option => (
+                  <li 
+                    className="menu__option" 
+                    key={option.link} 
+                    onClick={() => {
+                      history.push(option.link);
+                    }}
+                  >
+                    <Grid container alignItems="center" > 
+                      <Grid item className="menu__icon" style={{background: option.bg}}> 
+                        <FontAwesomeIcon icon={option.icon} color={option.color}></FontAwesomeIcon>               
+                      </Grid>
+                      <Grid item xs={8}>
+                        <p>{option.title}</p>
+                        <h6>{option.subtitle}</h6>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={8}>
-                      <p>{option.title}</p>
-                      <h6>{option.subtitle}</h6>
+                  </li>
+                ))
+              }
+              {
+                  online &&
+                  <li
+                    className="menu__option"
+                    onClick={() => {
+                      console.log('estamos offline', () => 'hola');
+                    }}
+                  >
+                    <Grid container alignItems="center" > 
+                      <Grid item className="menu__icon" style={{background: '#ad24ad'}}> 
+                        <FontAwesomeIcon icon={faSignOutAlt} color="#FFFFFF"></FontAwesomeIcon>               
+                      </Grid>
+                      <Grid item xs={8}>
+                        <p>Subir datos</p>
+                        <h6>Offline</h6>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </li>
-              ))
+                  </li>
+                }
+              </>
               :
               Array(3).fill(2).map((e, index) => (
                 <Loading key={index*2}/>
               ))
-            }
-            {
-              online &&
-              <li
-                className="menu__option"
-                onClick={() => {
-                  console.log('estamos offline', () => 'hola');
-                }}
-              >
-                <Grid container alignItems="center" > 
-                  <Grid item className="menu__icon" style={{background: '#ad24ad'}}> 
-                    <FontAwesomeIcon icon={faSignOutAlt} color="#FFFFFF"></FontAwesomeIcon>               
-                  </Grid>
-                  <Grid item xs={8}>
-                    <p>Subir datos</p>
-                    <h6>Offline</h6>
-                  </Grid>
-                </Grid>
-              </li>
             }
           </ul>
         </div>
