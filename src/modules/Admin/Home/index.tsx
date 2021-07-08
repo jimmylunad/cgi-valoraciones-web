@@ -14,8 +14,6 @@ import { AuthDataContext } from 'providers/Auth/provider';
 import { IAuthState } from 'providers/Auth/reducer';
 import { DBDataContext } from 'providers/DB/provider';
 import { IDBState } from 'providers/DB/reducer';
-import { AnyARecord } from 'dns';
-// import { useLiveQuery } from "dexie-react-hooks";
 
 const Loading = (): JSX.Element => (
   <li className="list__option">
