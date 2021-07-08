@@ -156,6 +156,8 @@ const Rating = (): JSX.Element => {
         }
       });
 
+      await db.table('assignments').delete(parseInt(data.id));
+
       setTimeout(() => {
         db.table("rating").add({
           id_assignment: data.id,
@@ -166,17 +168,14 @@ const Rating = (): JSX.Element => {
           file: files  
         });
 
-        db.table('assignments')
-        .delete(data.id).then(() => {
-          setResponseServer({
-            severity: 'success',
-            message: 'Se guardó exitosamente en base datos local',
-          });
-          setTimeout(() => {
-            reset();
-            history.push('/');
-          }, 4000);  
+        setResponseServer({
+          severity: 'success',
+          message: 'Se guardó exitosamente en base datos local',
         });
+        setTimeout(() => {
+          reset();
+          history.push('/');
+        }, 4000);  
 
       }, 100);
     }
