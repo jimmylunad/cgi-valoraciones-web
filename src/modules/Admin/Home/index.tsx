@@ -252,9 +252,16 @@ const Home = ():JSX.Element => {
               <h2>{plate}</h2>
             </div>
             {
-            !loadingAssignment && !loadingCombo && !loadingDates ?
-              <p>Tienes {isCounter} programaciones pendientes</p> :
-              <Skeleton height={20} width={180} />
+              role === ROLE.operator &&
+              <>
+                {
+                  !loadingAssignment && 
+                  !loadingCombo && 
+                  !loadingDates ?
+                    <p>Tienes {isCounter} programaciones pendientes</p> :
+                    <Skeleton height={20} width={180} />
+                }
+              </>
             }
           </div>
           <ul className="menu">
