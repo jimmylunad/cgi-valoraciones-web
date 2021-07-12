@@ -44,8 +44,10 @@ const Login = ():JSX.Element => {
     } else {
 
       setAuthLogin(response.data);
-      let expires = new Date()
-      expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
+      let expires: Date = new Date();
+      expires.setFullYear(expires.getFullYear() + 1);
+      // expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
+      // console.log("expires", expires);
       setCookie("token", response.data.token, { path: '/', expires });
       setCookie("pendingAssignment", response.data.pendingAssignment, { path: '/', expires });
       localStorage.setItem("plate",response.data.plate);
