@@ -5,7 +5,8 @@
       "namespace": "CGI",
       "package_name": "pe.gpstracking.webapp.twa",
       "sha256_cert_fingerprints": [
-        "C1:97:08:65:EC:8B:60:32:77:13:24:9F:58:89:E3:0F:DC:E6:89:E2:12:2E:FC:41:64:C6:C0:B6:E1:19:C5:EB"
+        "C1:97:08:65:EC:8B:60:32:77:13:24:9F:58:89:E3:0F:DC:E6:89:E2:12:2E:FC:41:64:C6:C0:B6:E1:19:C5:EB",
+        "6F:FC:07:FF:C0:BB:23:CC:FF:24:2D:A9:94:63:F1:AB:E2:69:D0:47:98:95:7A:16:43:25:26:14:C9:F5:72:3D"
       ]
     }
   }
