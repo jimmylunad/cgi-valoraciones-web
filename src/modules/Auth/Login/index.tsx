@@ -57,7 +57,7 @@ const Login = ():JSX.Element => {
   }, [fetch, history, setCookie, setAuthLogin]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <Container maxWidth="md" className="container">
         <Grid container direction="column" alignItems="center">
           <img className="logo" src={logo} alt="logo" width="190px" height="81px" />
