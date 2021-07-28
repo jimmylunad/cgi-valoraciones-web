@@ -149,6 +149,7 @@ const Rating = (): JSX.Element => {
           history.push('/');
         }, 4000);   
       }
+      await db.table('assignments').clear();
     } else {
 
       let files:any = [];

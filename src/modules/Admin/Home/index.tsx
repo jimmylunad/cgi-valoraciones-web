@@ -113,6 +113,7 @@ const Home = ():JSX.Element => {
     if (response.success) {
       localStorage.setItem('assignments', JSON.stringify(response.data));
       response.data.forEach(async (element: any) => await db.table("assignments").put(element));
+      getCountAssigments();
     };
 
     const responseCombo = await fetchCombo({});

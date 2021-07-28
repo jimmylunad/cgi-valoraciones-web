@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { Container, Grid } from "@material-ui/core";
 import Button from "components/Button";
@@ -12,6 +12,7 @@ import { useCookies } from 'react-cookie';
 import "./styles.scss";
 import logo from "./../../../images/logo.png";
 import useAuthActions from 'providers/Auth/actions';
+import handleNotify from 'utils/handle-notify';
 
 const Login = ():JSX.Element => {
   const [cookies, setCookie] = useCookies(["token", "pendingAssignment"]);
@@ -34,6 +35,10 @@ const Login = ():JSX.Element => {
     },
     loading: false,
   });
+
+  useEffect(() => {
+    handleNotify();
+  },[]);
 
   const onSubmit = useCallback(async (data: any) => {
     setErrorServer(null);
