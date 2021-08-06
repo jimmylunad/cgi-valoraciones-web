@@ -92,15 +92,17 @@
   }
 
   .--blue {
-    height:136px;
     background-color: #5b8cc7;
-    font-size: 28px;
-    flex-direction: column;
-    span {
-      font-size: 40px;
-    }
+    margin-bottom: 8px;
     &.--active, &:hover {
       background-color: $color-blue;
+    }
+  }
+
+  .--gray {
+    background-color: #6d6d6d;
+    &.--active, &:hover {
+      background-color: $color-text;
     }
   }
   

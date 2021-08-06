@@ -39,6 +39,7 @@ const SupervisorAssignments = (): JSX.Element => {
     canceled: number;
     doned: number;
     scheduled: number;
+    rescheduled: number;
   }>();
   const OPTIONS_TABS: TabOption[] = [
     {title: 'HOY', link: '/programaciones/1'},
@@ -125,7 +126,7 @@ const SupervisorAssignments = (): JSX.Element => {
           <>
 
             <Grid container className="filters_buttons">
-              <Grid xs={6}>
+              <Grid container xs={6} justify="flex-start">
                 <Button 
                   className={`btn --blue w-98 ${currentFilter === 'scheduled' ? '--active' : ''}`}
                   onClick={() => {setCurrentFilter('scheduled')}}
@@ -133,6 +134,16 @@ const SupervisorAssignments = (): JSX.Element => {
                   {loading ? <Skeleton height={50} width={50}></Skeleton> : 
                     <>
                       <span>{online ? dashboardData?.scheduled : assignments.length}</span> Programadas
+                    </>
+                  }
+                </Button>
+                <Button 
+                  className={`btn --gray w-98 ${currentFilter === 'rescheduled' ? '--active' : ''}`}
+                  onClick={() => {setCurrentFilter('rescheduled')}}
+                >
+                  {loading ? <Skeleton height={50} width={50}></Skeleton> : 
+                    <>
+                      <span>{online ? dashboardData?.rescheduled : assignments.length}</span> Reprogramadas
                     </>
                   }
                 </Button>

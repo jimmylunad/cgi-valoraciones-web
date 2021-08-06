@@ -106,6 +106,10 @@ const Information = (): JSX.Element => {
             <h6 className="detail__label">Gerencia</h6>
             <span className="detail__value">{assignment.management}</span>
           </Grid>
+          <Grid item xs={12} className="detail__grid">
+            <h6 className="detail__label">Superintendencia</h6>
+            <span className="detail__value">{assignment.superIntendence}</span>
+          </Grid>
         </Grid>
         {
           (assignment.availableOptions || role === ROLE.supervisor) && 

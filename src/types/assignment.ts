@@ -9,6 +9,7 @@ export type Assignment = {
   dateAttended: string;
   status: string;
   availableOptions?:boolean;
+  superIntendence?: string;
 };
 
 

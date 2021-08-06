@@ -44,6 +44,10 @@ const Summary  = ({ success, cancel, assignment, form, images, isRating }: Summa
         <h6 className="detail__label">Gerencia</h6>
         <span className="detail__value">{assignment.management}</span>
       </Grid>
+      <Grid item xs={12} className="detail__grid">
+        <h6 className="detail__label">Superintendencia</h6>
+        <span className="detail__value">{assignment.superIntendence}</span>
+      </Grid>
     </Grid>
     <hr></hr>
     <Grid container className="detail">
